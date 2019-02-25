@@ -72,7 +72,13 @@ golem::add_module( name = "my_other_module") # Name of the module
 
 ## 2.2 Add dependencies
 
-usethis::use_package("pkg") # To call each time you need a new package
+usethis::use_package("dplyr")
+usethis::use_package("tidyr") 
+usethis::use_package("purrr")
+usethis::use_package("jpeg")
+usethis::use_package("readr")
+usethis::use_package("ggplot2")
+usethis::use_dev_package("shinipsum")
 
 ## 2.3 Various tools along the way
 

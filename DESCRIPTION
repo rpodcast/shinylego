@@ -1,7 +1,10 @@
 Package: shinylego
 Title: Shiny application for creating LEGO mosiacs
 Version: 0.0.0.9000
-Authors@R: person('Eric', 'Nantz', email = 'thercast@gmail.com', role = c('cre', 'aut'))
+Authors@R: c(
+  person('Eric', 'Nantz', email = 'thercast@gmail.com', role = c('cre', 'aut')),
+  person('Ryan', 'Timpe', role = c('aut'))
+  )
 Description: Shinylego encapsulates the workflow created by Ryan Timpe to create LEGO mosaics directly with R code based on a single image.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -12,8 +15,17 @@ Imports:
     attempt,
     glue,
     golem,
-    htmltools
+    htmltools,
+    dplyr,
+    tidyr,
+    purrr,
+    jpeg,
+    readr,
+    ggplot2,
+    shinipsum (>= 0.0.0.9000)
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
     testthat
+Remotes:  
+    Thinkr-open/shinipsum
