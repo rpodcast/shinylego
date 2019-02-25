@@ -78,6 +78,7 @@ usethis::use_package("purrr")
 usethis::use_package("jpeg")
 usethis::use_package("readr")
 usethis::use_package("ggplot2")
+usethis::use_package("magrittr")
 usethis::use_dev_package("shinipsum")
 
 ## 2.3 Various tools along the way

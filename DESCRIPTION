@@ -22,11 +22,12 @@ Imports:
     jpeg,
     readr,
     ggplot2,
-    shinipsum (>= 0.0.0.9000)
+    shinipsum (>= 0.0.0.9000),
+    magrittr
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
     testthat
 Roxygen: list(markdown = TRUE)
-Remotes:  
+Remotes: 
     Thinkr-open/shinipsum
