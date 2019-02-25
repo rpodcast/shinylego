@@ -27,5 +27,6 @@ URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
     testthat
+Roxygen: list(markdown = TRUE)
 Remotes:  
     Thinkr-open/shinipsum
