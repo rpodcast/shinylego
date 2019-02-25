@@ -9,6 +9,8 @@
 #'   Default is `1`, meaning no adjustment.
 #' @param warhol ??? Default is `1:3`
 #'
+#' @import dplyr
+#' @import tidyr
 #' @return list with object called `Img_scaled` representing the scaled image. 
 #' @export
 #'
@@ -81,16 +83,44 @@ scale_image <- function(image, img_size, brightness = 1, warhol = 1:3){
 
 
 #2 Legoize - Convert image Lego colors -----
+#' Convert raw R,G,B values to LEGO version
+#' 
+#' Replaces a color defined by RGB values to a simular color in the 
+#' `lego_colors` data set using the shortest Euclidean distance.  
+#'
+#' @param R Red color intensity value
+#' @param G Green color intensity value
+#' @param B Blue color intensity value
+#'
+#' @return data frame 
+#' @importFrom grDevices rgb
+#' @import dplyr
+#' @export
+#'
+#' @examples
 convert_to_lego_colors <- function(R, G, B) {
   data(lego_colors)
   
   lego_colors %>% 
     mutate(dist = ((R_lego - R)^2 + (G_lego - G)^2 + (B_lego - B)^2)^(1/2)) %>% 
     top_n(-1, dist) %>% 
-    mutate(Lego_color = rgb(R_lego, G_lego, B_lego)) %>% 
+    mutate(Lego_color = grDevices::rgb(R_lego, G_lego, B_lego)) %>% 
     select(Lego_name = Color, Lego_color)
 }
 
+#' Title
+#'
+#' @param image_list 
+#' @param theme 
+#' @param contrast 
+#'
+#' @import dplyr
+#' @import tidyr
+#' @import purrr
+#' @return
+#' @export
+#'
+#' @examples
 legoize <- function(image_list, theme = "default", contrast = 1){
   in_list <- image_list
   
@@ -100,14 +130,14 @@ legoize <- function(image_list, theme = "default", contrast = 1){
   if(theme == "default"){
     #Speed up calc by round pixel to nearest 1/20 & only calculating unique
     mosaic_colors <- in_list$Img_scaled %>% 
-      mutate_at(vars(R, G, B), funs(round(.*20)/20)) %>% 
+      mutate_at(vars(R, G, B), list(~round(.*20)/20)) %>% 
       select(R, G, B) %>% 
       distinct() %>% 
       mutate(lego = purrr::pmap(list(R, G, B), convert_to_lego_colors, lego_colors)) %>% 
       unnest(lego)
     
     img <- in_list$Img_scaled %>% 
-      mutate_at(vars(R, G, B), funs(round(.*20)/20)) %>%
+      mutate_at(vars(R, G, B), list(~round(.*20)/20)) %>%
       left_join(mosaic_colors, by = c("R", "G", "B"))
     
   } else if (theme == "bw"){
@@ -133,6 +163,17 @@ legoize <- function(image_list, theme = "default", contrast = 1){
 }
 
 #3 collect_bricks - Combine bricks into larger ones ----
+#' Title
+#'
+#' @param image_list 
+#' @param mosaic_type 
+#'
+#' @import dplyr
+#' @import tidyr
+#' @return
+#' @export
+#'
+#' @examples
 collect_bricks <- function(image_list, mosaic_type = "flat"){
   in_list <- image_list
   
@@ -247,6 +288,16 @@ collect_bricks <- function(image_list, mosaic_type = "flat"){
 }
 
 #3a display_set  - plot output of collect_bricks() ----
+#' Title
+#'
+#' @param image_list 
+#' @param title 
+#'
+#' @import ggplot2
+#' @return
+#' @export
+#'
+#' @examples
 display_set <- function(image_list, title=NULL){
   in_list <- image_list
   image <- in_list$Img_bricks
@@ -278,6 +329,18 @@ display_set <- function(image_list, title=NULL){
 } 
 
 #4 Instructions ----
+#' Title
+#'
+#' @param image_list 
+#' @param num_steps 
+#'
+#' @import dplyr
+#' @import ggplot2
+#' @import purrr
+#' @return
+#' @export
+#'
+#' @examples
 generate_instructions <- function(image_list, num_steps=6) {
   in_list <- image_list
   image <- in_list$Img_bricks
@@ -323,6 +386,16 @@ generate_instructions <- function(image_list, num_steps=6) {
 
 #5 Piece count ----
 #Print as data frame
+#' Title
+#'
+#' @param image_list 
+#'
+#' @import dplyr
+#' @import tidyr
+#' @return
+#' @export
+#'
+#' @examples
 table_pieces <- function(image_list){
   pcs <- image_list$pieces
   
