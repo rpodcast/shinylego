@@ -20,3 +20,5 @@ res3d <- scale_image(image, img_size = 48) %>%
   legoize() %>%
   collect_bricks() %>%
   collect_3d()
+
+display_3d(res3d)
