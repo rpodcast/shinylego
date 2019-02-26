@@ -18,8 +18,9 @@ Plot object
 Render the LEGO mosaic as a \code{ggplot}
 }
 \examples{
-img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
-res <- scale_image(img, img_size = 48) \%>\%
+img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+image <- jpeg::readJPEG(img_file)
+res <- scale_image(image, img_size = 48) \%>\%
   legoize() \%>\%
   collect_bricks()
   

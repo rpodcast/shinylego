@@ -19,12 +19,14 @@ a tag
 Hide or display a tag
 }
 \examples{
+\dontrun{
 ## Hide
 a <- shiny::tags$p(src = "plop", "pouet")
 undisplay(a)
 b <- shiny::actionButton("go_filter", "go")
 undisplay(b)
-
+}
+\dontrun{
 ## Show
 a <- shiny::tags$p(src = "plop", "pouet")
 a_hidden <- undisplay(a)
@@ -35,5 +37,5 @@ display(b_show)
 # Keep other attributes
 b_show$attribs$style <- 'display: none; background: red'
 display(b_show)
-
+}
 }

@@ -1,3 +1,16 @@
+theme_lego <- function() {
+  theme_lego <- theme(panel.background = element_rect(fill = "#7EC0EE"),
+                      strip.background = element_rect(fill = "#F7F18D"),
+                      strip.text = element_text(color = "#333333", face = "bold"),
+                      axis.line = element_blank(),
+                      axis.title.x = element_blank(),
+                      axis.text.x = element_blank(),
+                      axis.title.y = element_blank(),
+                      axis.text.y = element_blank())
+  
+  return(theme_lego)
+}
+
 #' Create a scaled version of jpeg image
 #'
 #' @param image raster array of jpeg image file as produced by `jpeg::readJPEG`.
@@ -15,8 +28,9 @@
 #' @export
 #'
 #' @examples
-#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
-#' res <- scale_image(img, img_size = 48)
+#' img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' image <- jpeg::readJPEG(img_file)
+#' res <- scale_image(image, img_size = 48)
 scale_image <- function(image, img_size, brightness = 1, warhol = 1:3){
   #Adjust brightness
   if(brightness < 0 ){stop("brightness should be a positive value. Use 1 for no change, >1 for lighter, <1 for darker.")}
@@ -83,8 +97,6 @@ scale_image <- function(image, img_size, brightness = 1, warhol = 1:3){
   return(out_list)
 }
 
-
-#2 Legoize - Convert image Lego colors -----
 #' Convert raw R,G,B values to LEGO version
 #' 
 #' Replaces a color defined by RGB values to a simular color in the 
@@ -100,9 +112,9 @@ scale_image <- function(image, img_size, brightness = 1, warhol = 1:3){
 #' @export
 #'
 #' @examples
-#' new_colors <- convert_to_lego_colors(R = 30, G = 74, B = 38)
-convert_to_lego_colors <- function(R, G, B) {
-  data(lego_colors)
+#' data(lego_colors, package = "shinylego")
+#' new_colors <- convert_to_lego_colors(R = 30, G = 74, B = 38, lego_colors)
+convert_to_lego_colors <- function(R, G, B, lego_colors) {
   
   lego_colors %>% 
     mutate(dist = ((R_lego - R)^2 + (G_lego - G)^2 + (B_lego - B)^2)^(1/2)) %>% 
@@ -127,14 +139,12 @@ convert_to_lego_colors <- function(R, G, B) {
 #' @export
 #'
 #' @examples
-#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
-#' res <- scale_image(img, img_size = 48) %>%
+#' img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' image <- jpeg::readJPEG(img_file)
+#' res <- scale_image(image, img_size = 48) %>%
 #'   legoize()
 legoize <- function(image_list, theme = "default", contrast = 1){
   in_list <- image_list
-  
-  data(lego_colors)
-  color_table <- lego_colors
   
   if(theme == "default"){
     #Speed up calc by round pixel to nearest 1/20 & only calculating unique
@@ -171,8 +181,7 @@ legoize <- function(image_list, theme = "default", contrast = 1){
   
 }
 
-#3 collect_bricks - Combine bricks into larger ones ----
-#' Title
+#' Collect required bricks for mosaic
 #'
 #' @param image_list list object containing the `Img_scaled` data frame
 #'   as produced by the [legoize()] function.
@@ -190,8 +199,9 @@ legoize <- function(image_list, theme = "default", contrast = 1){
 #' @export
 #'
 #' @examples
-#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
-#' res <- scale_image(img, img_size = 48) %>%
+#' img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' image <- jpeg::readJPEG(img_file)
+#' res <- scale_image(image, img_size = 48) %>%
 #'   legoize() %>%
 #'   collect_bricks()
 collect_bricks <- function(image_list, mosaic_type = "flat"){
@@ -307,7 +317,6 @@ collect_bricks <- function(image_list, mosaic_type = "flat"){
   return(in_list)
 }
 
-#3a display_set  - plot output of collect_bricks() ----
 #' Render the LEGO mosaic as a `ggplot`
 #'
 #' @param image_list List of objects produced by [collect_bricks()]
@@ -318,8 +327,9 @@ collect_bricks <- function(image_list, mosaic_type = "flat"){
 #' @export
 #'
 #' @examples
-#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
-#' res <- scale_image(img, img_size = 48) %>%
+#' img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' image <- jpeg::readJPEG(img_file)
+#' res <- scale_image(image, img_size = 48) %>%
 #'   legoize() %>%
 #'   collect_bricks()
 #'   
@@ -349,12 +359,11 @@ display_set <- function(image_list, title=NULL){
   img <- img+
     labs(title = title) +
     theme_minimal() +
-    theme_lego
+    theme_lego()
   
   return(img)
 } 
 
-#4 Instructions ----
 #' Produce instructions for building LEGO mosaic
 #'
 #' @param image_list List of objects produced by [collect_bricks()]
@@ -367,8 +376,9 @@ display_set <- function(image_list, title=NULL){
 #' @export
 #'
 #' @examples
-#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
-#' res <- scale_image(img, img_size = 48) %>%
+#' img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' image <- jpeg::readJPEG(img_file)
+#' res <- scale_image(image, img_size = 48) %>%
 #'   legoize() %>%
 #'   collect_bricks()
 #'   
@@ -413,11 +423,9 @@ generate_instructions <- function(image_list, num_steps=6) {
     coord_fixed(ratio = coord_ratio, expand = FALSE) +
     facet_wrap(~Step) +
     theme_minimal()+
-    theme_lego
+    theme_lego()
 }
 
-#5 Piece count ----
-#Print as data frame
 #' Create printer-friendly version of required bricks
 #'
 #' @param image_list List of objects produced by [collect_bricks()]
@@ -429,8 +437,9 @@ generate_instructions <- function(image_list, num_steps=6) {
 #' @export
 #'
 #' @examples
-#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
-#' res <- scale_image(img, img_size = 48) %>%
+#' img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' image <- jpeg::readJPEG(img_file)
+#' res <- scale_image(image, img_size = 48) %>%
 #'   legoize() %>%
 #'   collect_bricks()
 #'   
@@ -444,7 +453,6 @@ table_pieces <- function(image_list){
     rename(`LEGO Brick Color` = Lego_name)
 }
 
-#Print as image
 #' Visualize required pieces for mosaic
 #'
 #' @param image_list List of objects produced by [collect_bricks()]
@@ -459,8 +467,9 @@ table_pieces <- function(image_list){
 #' @export
 #'
 #' @examples
-#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
-#' res <- scale_image(img, img_size = 48) %>%
+#' img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' image <- jpeg::readJPEG(img_file)
+#' res <- scale_image(image, img_size = 48) %>%
 #'   legoize() %>%
 #'   collect_bricks()
 #'   
@@ -527,7 +536,7 @@ display_pieces <- function(image_list){
       "Mosaic is 2-bricks deep. Can substitute 2-stud bricks for 1-stud alternatives for a thinner mosaic."}else{""})) +
     facet_wrap(~Lego_name, ncol=facet_cols) +
     theme_minimal()+
-    theme_lego +
+    theme_lego() +
     theme(
       panel.grid = element_blank()
     )

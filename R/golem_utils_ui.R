@@ -73,9 +73,10 @@ named_to_li <- function(list, class = NULL){
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' a <- tags$p(src = "plop", "pouet")
 #' tagRemoveAttributes(a, "src")
-
+#' }
 tagRemoveAttributes <- function(tag, ...) {
   attrs <- as.character(list(...))
   for (i in seq_along(attrs)) {
@@ -94,11 +95,13 @@ tagRemoveAttributes <- function(tag, ...) {
 #' @importFrom htmltools tagList
 #'
 #' @examples
+#' \dontrun{
 #' ## Hide
 #' a <- shiny::tags$p(src = "plop", "pouet")
 #' undisplay(a)
 #' b <- shiny::actionButton("go_filter", "go")
 #' undisplay(b)
+#' }
 #' @rdname display
 
 undisplay <- function(tag) {
@@ -115,7 +118,7 @@ undisplay <- function(tag) {
 #' @importFrom htmltools tagList
 #'
 #' @examples
-#'
+#'\dontrun{
 #' ## Show
 #' a <- shiny::tags$p(src = "plop", "pouet")
 #' a_hidden <- undisplay(a)
@@ -126,7 +129,7 @@ undisplay <- function(tag) {
 #' # Keep other attributes
 #' b_show$attribs$style <- 'display: none; background: red'
 #' display(b_show)
-#'
+#' }
 #' @export
 
 display <- function(tag) {

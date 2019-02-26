@@ -18,6 +18,8 @@ a new tag
 Remove a tag attribute
 }
 \examples{
+\dontrun{
 a <- tags$p(src = "plop", "pouet")
 tagRemoveAttributes(a, "src")
+}
 }

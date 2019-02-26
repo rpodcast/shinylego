@@ -4,7 +4,7 @@
 \alias{convert_to_lego_colors}
 \title{Convert raw R,G,B values to LEGO version}
 \usage{
-convert_to_lego_colors(R, G, B)
+convert_to_lego_colors(R, G, B, lego_colors)
 }
 \arguments{
 \item{R}{Red color intensity value}
@@ -21,5 +21,6 @@ Replaces a color defined by RGB values to a simular color in the
 \code{lego_colors} data set using the shortest Euclidean distance.
 }
 \examples{
-new_colors <- convert_to_lego_colors(R = 30, G = 74, B = 38)
+data(lego_colors, package = "shinylego")
+new_colors <- convert_to_lego_colors(R = 30, G = 74, B = 38, lego_colors)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lego_functions.R
 \name{collect_bricks}
 \alias{collect_bricks}
-\title{Title}
+\title{Collect required bricks for mosaic}
 \usage{
 collect_bricks(image_list, mosaic_type = "flat")
 }
@@ -24,11 +24,12 @@ list with following components:
 }
 }
 \description{
-Title
+Collect required bricks for mosaic
 }
 \examples{
-img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
-res <- scale_image(img, img_size = 48) \%>\%
+img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+image <- jpeg::readJPEG(img_file)
+res <- scale_image(image, img_size = 48) \%>\%
   legoize() \%>\%
   collect_bricks()
 }
