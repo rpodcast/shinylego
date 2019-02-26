@@ -31,3 +31,4 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 Remotes: 
     Thinkr-open/shinipsum
+RoxygenNote: 6.1.1

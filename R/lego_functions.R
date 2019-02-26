@@ -15,6 +15,8 @@
 #' @export
 #'
 #' @examples
+#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' res <- scale_image(img, img_size = 48)
 scale_image <- function(image, img_size, brightness = 1, warhol = 1:3){
   #Adjust brightness
   if(brightness < 0 ){stop("brightness should be a positive value. Use 1 for no change, >1 for lighter, <1 for darker.")}
@@ -98,6 +100,7 @@ scale_image <- function(image, img_size, brightness = 1, warhol = 1:3){
 #' @export
 #'
 #' @examples
+#' new_colors <- convert_to_lego_colors(R = 30, G = 74, B = 38)
 convert_to_lego_colors <- function(R, G, B) {
   data(lego_colors)
   
@@ -124,6 +127,9 @@ convert_to_lego_colors <- function(R, G, B) {
 #' @export
 #'
 #' @examples
+#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' res <- scale_image(img, img_size = 48) %>%
+#'   legoize()
 legoize <- function(image_list, theme = "default", contrast = 1){
   in_list <- image_list
   
@@ -184,6 +190,10 @@ legoize <- function(image_list, theme = "default", contrast = 1){
 #' @export
 #'
 #' @examples
+#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' res <- scale_image(img, img_size = 48) %>%
+#'   legoize() %>%
+#'   collect_bricks()
 collect_bricks <- function(image_list, mosaic_type = "flat"){
   in_list <- image_list
   
@@ -308,6 +318,12 @@ collect_bricks <- function(image_list, mosaic_type = "flat"){
 #' @export
 #'
 #' @examples
+#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' res <- scale_image(img, img_size = 48) %>%
+#'   legoize() %>%
+#'   collect_bricks()
+#'   
+#' display_set(res)
 display_set <- function(image_list, title=NULL){
   in_list <- image_list
   image <- in_list$Img_bricks
@@ -351,6 +367,12 @@ display_set <- function(image_list, title=NULL){
 #' @export
 #'
 #' @examples
+#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' res <- scale_image(img, img_size = 48) %>%
+#'   legoize() %>%
+#'   collect_bricks()
+#'   
+#' generate_instructions(res)
 generate_instructions <- function(image_list, num_steps=6) {
   in_list <- image_list
   image <- in_list$Img_bricks
@@ -407,6 +429,12 @@ generate_instructions <- function(image_list, num_steps=6) {
 #' @export
 #'
 #' @examples
+#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' res <- scale_image(img, img_size = 48) %>%
+#'   legoize() %>%
+#'   collect_bricks()
+#'   
+#' table_pieces(res)
 table_pieces <- function(image_list){
   pcs <- image_list$pieces
   
@@ -431,6 +459,12 @@ table_pieces <- function(image_list){
 #' @export
 #'
 #' @examples
+#' img <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' res <- scale_image(img, img_size = 48) %>%
+#'   legoize() %>%
+#'   collect_bricks()
+#'   
+#' display_pieces(res)
 display_pieces <- function(image_list){
   in_list <- image_list
   pcs <- in_list$pieces
