@@ -108,16 +108,19 @@ convert_to_lego_colors <- function(R, G, B) {
     select(Lego_name = Color, Lego_color)
 }
 
-#' Title
+#' Create LEGO-ized version of image
 #'
-#' @param image_list 
-#' @param theme 
-#' @param contrast 
+#' @param image_list list object containing the `Img_scaled` data frame
+#'   as produced by the [scale_image()] function.
+#' @param theme string indicating whether to use the `default` color
+#'   theme or `bw` (grayscale) theme.
+#' @param contrast Adjustment for color allocation when using grayscale theme.
+#'   Must be a positive number.  Default is 1, meaning no adjustment.
 #'
 #' @import dplyr
 #' @import tidyr
 #' @import purrr
-#' @return
+#' @return list with modified `Img_lego` object (the original image lego-ized)
 #' @export
 #'
 #' @examples
@@ -165,12 +168,19 @@ legoize <- function(image_list, theme = "default", contrast = 1){
 #3 collect_bricks - Combine bricks into larger ones ----
 #' Title
 #'
-#' @param image_list 
-#' @param mosaic_type 
-#'
+#' @param image_list list object containing the `Img_scaled` data frame
+#'   as produced by the [legoize()] function.
+#' @param mosaic_type String for mosaic type to produce. A `flat` mosaic
+#'   places a single layer of LEGO plates on a base plate with study-side up.
+#'   A `stacked` mosaic staggers bricks and places them horizontally. 
+#' 
 #' @import dplyr
 #' @import tidyr
-#' @return
+#' @return list with following components:
+#'   * `Img_bricks`: Updated LEGO image
+#'   * `ID_bricks`: Data frame with brick IDs
+#'   * `mosaic_type`: Type of mosaic specfied by user
+#'   * `pieces`: Data frame with number of bricks needed`
 #' @export
 #'
 #' @examples
@@ -288,13 +298,13 @@ collect_bricks <- function(image_list, mosaic_type = "flat"){
 }
 
 #3a display_set  - plot output of collect_bricks() ----
-#' Title
+#' Render the LEGO mosaic as a `ggplot`
 #'
-#' @param image_list 
-#' @param title 
+#' @param image_list List of objects produced by [collect_bricks()]
+#' @param title Optional title for plot
 #'
 #' @import ggplot2
-#' @return
+#' @return Plot object
 #' @export
 #'
 #' @examples
@@ -329,15 +339,15 @@ display_set <- function(image_list, title=NULL){
 } 
 
 #4 Instructions ----
-#' Title
+#' Produce instructions for building LEGO mosaic
 #'
-#' @param image_list 
-#' @param num_steps 
+#' @param image_list List of objects produced by [collect_bricks()]
+#' @param num_steps Number of steps for the instructions. Default is 6.
 #'
 #' @import dplyr
 #' @import ggplot2
 #' @import purrr
-#' @return
+#' @return `ggplot2` plot object with each facet being a particular step
 #' @export
 #'
 #' @examples
@@ -386,13 +396,14 @@ generate_instructions <- function(image_list, num_steps=6) {
 
 #5 Piece count ----
 #Print as data frame
-#' Title
+#' Create printer-friendly version of required bricks
 #'
-#' @param image_list 
+#' @param image_list List of objects produced by [collect_bricks()]
 #'
 #' @import dplyr
 #' @import tidyr
-#' @return
+#' @return data frame (tibble) with columns for each brick dimension and rows
+#'   for each unique brick color in mosaic.
 #' @export
 #'
 #' @examples
@@ -406,6 +417,20 @@ table_pieces <- function(image_list){
 }
 
 #Print as image
+#' Visualize required pieces for mosaic
+#'
+#' @param image_list List of objects produced by [collect_bricks()]
+#'
+#' @import ggplot2
+#' @import dplyr
+#' @import tibble
+#' @import purrr
+#' @return `ggplot` plot object showing number of required bricks faceted by 
+#'   brick color.  Each facet contains all of the unique brick types required
+#'   for that color.
+#' @export
+#'
+#' @examples
 display_pieces <- function(image_list){
   in_list <- image_list
   pcs <- in_list$pieces
