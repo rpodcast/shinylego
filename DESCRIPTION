@@ -23,7 +23,8 @@ Imports:
     readr,
     ggplot2,
     shinipsum (>= 0.0.0.9000),
-    magrittr
+    magrittr,
+    rayshader
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
