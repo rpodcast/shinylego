@@ -22,3 +22,10 @@ res3d <- scale_image(image, img_size = 48) %>%
   collect_3d()
 
 display_3d(res3d)
+
+library(magick)
+
+orig <- image_read("Pictures/200px-Tux.svg.png")
+orig_jpg <- image_convert(orig, format = "jpeg")
+
+image_write(orig_jpg, "Pictures/tux_from_magick.jpeg")
