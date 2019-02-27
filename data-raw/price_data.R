@@ -13,4 +13,4 @@ price_data <- readr::read_csv("data-raw/price_data.csv",
                                  price = col_double()
                                ))
 
-save(lego_colors, file = "data/price_data.rdata")
+usethis::use_data(price_data, overwrite = TRUE)

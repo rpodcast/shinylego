@@ -30,4 +30,4 @@ lego_colors <- lego_colors %>%
   rename(R_lego = R, G_lego = G, B_lego = B)%>% 
   mutate_at(vars(starts_with("w_")), list(~ ifelse(is.na(.), 0, .)))
 
-save(lego_colors, file = "data/lego_colors.rdata")
+usethis::use_data(lego_colors, overwrite = TRUE)
