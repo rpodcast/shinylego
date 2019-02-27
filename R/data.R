@@ -25,3 +25,19 @@
 #' @examples
 #' lego_colors
 "lego_colors"
+
+#' LEGO brick price data
+#' 
+#' A dataset with prices of plate bricks for the common sizes used in building the 
+#' LEGO mosaics. These prices were derived from the [official LEGO shop store](https://shop.lego.com)
+#' as of early 2019. 
+#' 
+#' @format A data frame (tibble) with the following columns:
+#' * `type`: Type of brick
+#' * `size`: Dimensions in format `a x b` measured in studs
+#' * `shape`: Either square (`a x a`) or rectangle (`a x b`)
+#' * `price`: Price for one unit of the specific brick (in U.S. dollars)
+#' 
+#' @examples
+#' price_data
+"price_data"
