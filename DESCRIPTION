@@ -25,7 +25,8 @@ Imports:
     shinipsum (>= 0.0.0.9000),
     magrittr,
     rayshader,
-    magick
+    magick,
+    rgl
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
