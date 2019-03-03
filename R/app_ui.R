@@ -3,7 +3,7 @@
 app_ui <- function() {
   bs4DashPage(
     title = "ShinyLEGO",
-    sidebar_collapsed = FALSE,
+    sidebar_collapsed = TRUE,
     
     # navigation bar
     navbar = bs4DashNavbar(
