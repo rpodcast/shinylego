@@ -27,13 +27,14 @@ Imports:
     rayshader,
     magick,
     rgl,
-    bs4Dash (>= 0.3.0)
+    bs4Dash (>= 0.3.0),
+    fs
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
     testthat
 Roxygen: list(markdown = TRUE)
-Remotes:  
+Remotes: 
     Thinkr-open/shinipsum,
     RinteRface/bs4Dash
 RoxygenNote: 6.1.1
