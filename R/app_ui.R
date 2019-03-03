@@ -42,7 +42,10 @@ app_ui <- function() {
         bs4Jumbotron(
           title = "Welcome to the app!",
           lead = "This is the small text appearing right below the title",
-          "This is text that could be any element",
+          tagList(
+            "This is text that could be any element",
+            mod_upload_graphicui("m1")
+          ),
           status = "primary",
           href = "https://r-podcast.org"
         )
