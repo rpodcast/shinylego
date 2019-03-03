@@ -23,3 +23,18 @@ drop_nulls <- function(x){
     x
   }
 }
+
+# Credit: Dean Attali 
+# source: https://github.com/daattali/advanced-shiny/tree/master/upload-file-names
+fixUploadedFilesNames <- function(x) {
+  if (is.null(x)) {
+    return()
+  }
+  
+  oldNames = x$datapath
+  newNames = file.path(dirname(x$datapath),
+                       x$name)
+  file.rename(from = oldNames, to = newNames)
+  x$datapath <- newNames
+  x
+}
