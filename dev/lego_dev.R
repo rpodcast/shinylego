@@ -10,6 +10,11 @@ res <- scale_image(image, img_size = 48) %>%
 
 display_set(res)
 
+res <- generate_steps(res, num_steps = 10)
+
+plot_instructions(res)
+plot_instructions(res, step_id = "Step 03")
+
 generate_instructions(res, num_steps = 10)
 
 pieces <- table_pieces(res)

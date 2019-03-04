@@ -364,6 +364,118 @@ display_set <- function(image_list, title=NULL){
   return(img)
 } 
 
+#' Produce tidy data set for building instructions
+#'
+#' @param image_list List of objects produced by [collect_bricks()]
+#' @param num_steps Number of steps for the instructions. Default is 6.
+#'
+#' @import dplyr
+#' @import purrr
+#' @return list with new slot containing `tibble` of the instructions
+#' @export
+#'
+#' @examples
+#' img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
+#' image <- jpeg::readJPEG(img_file)
+#' res <- scale_image(image, img_size = 48) %>%
+#'   legoize() %>%
+#'   collect_bricks()
+#'   
+#' res_steps <- generate_steps(res)
+#' 
+generate_steps <- function(image_list, num_steps=6) {
+  in_list <- image_list
+  image <- in_list$Img_bricks
+  type <- in_list$mosaic_type
+  
+  num_steps <- min(round(num_steps), 40)
+  
+  rows_per_step <- ceiling((max(image$ymax)-0.5) / (num_steps+1))
+  
+  create_steps <- function(a, n_steps) {
+    if(a < n_steps){
+      image %>% 
+        group_by(brick_id) %>% 
+        filter(min(ymin) <= a*rows_per_step+(min(image$ymin)+0.5)) %>% 
+        ungroup() %>%
+        mutate(Step = paste("Step", (if(a<10){paste0('0', a)}else{a})))
+    } else {
+      image %>% 
+        mutate(Step = paste("Step", (if(a<10){paste0('0', a)}else{a})))
+    }
+    
+  }
+  
+  #Ratio of the "pixels" is different for flat or stacked bricks
+  if(type == "flat"){
+    coord_ratio <- 1
+  } else {
+    coord_ratio <- 6/5
+  }
+  
+  res <- 1:num_steps %>% 
+    map(create_steps, num_steps) %>% 
+    bind_rows()
+  
+  in_list[['steps']] <- res
+  return(in_list)
+}
+
+#' Display plot with instructions at all or specific step
+#'
+#' @param steps_df `tibble` of the bricks required at each step
+#' @param step_id Optional index of step to print. If `NULL` 
+#'   (default), all steps are plotted.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+plot_instructions <- function(image_list, step_id = NULL) {
+  
+  in_list <- image_list
+  type <- in_list$mosaic_type
+  
+  all_x_max <- max(in_list$steps$xmax)
+  all_x_min <- min(in_list$steps$xmin)
+  all_y_max <- max(in_list$steps$ymax)
+  all_y_min <- min(in_list$steps$ymin)
+
+  if (!is.null(step_id)) {
+    steps_df <- filter(in_list[['steps']], Step %in% step_id)
+  } else {
+    steps_df <- in_list[['steps']]
+  }
+  
+  #Ratio of the "pixels" is different for flat or stacked bricks
+  if(type == "flat"){
+    coord_ratio <- 1
+  } else {
+    coord_ratio <- 6/5
+  }
+  
+  p <- ggplot(steps_df) +
+    geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax,
+                  fill = Lego_color), color = "#333333")+
+    scale_fill_identity() +
+    coord_fixed(ratio = coord_ratio, expand = FALSE)
+  
+  if (is.null(step_id) || length(step_id) > 1) {
+    p <- p +
+      facet_wrap(~Step)
+  } else {
+    p <- p +
+      scale_y_continuous(limits = c(NA, all_y_max))
+  }
+  
+  # apply theme
+  p <- p +
+    theme_minimal()+
+    theme_lego()
+  
+  return(p)
+}
+
 #' Produce instructions for building LEGO mosaic
 #'
 #' @param image_list List of objects produced by [collect_bricks()]
