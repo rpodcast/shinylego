@@ -7,6 +7,7 @@
 #' @export 
 #' @importFrom shiny NS tagList 
 #' @import shinyWidgets
+#' @import shinycustomloader
 #' @examples 
 mod_scale_imageui <- function(id){
   ns <- NS(id)
@@ -71,7 +72,7 @@ mod_scale_imageui <- function(id){
         ),
         fluidRow(
           col_12(
-            plotOutput(ns("mosaic_2d"))
+            withLoader(plotOutput(ns("mosaic_2d")), type = "image", loader = "lego_loader.gif")
           )
         )
       )

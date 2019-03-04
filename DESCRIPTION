@@ -29,7 +29,8 @@ Imports:
     rgl,
     bs4Dash (>= 0.3.0),
     fs,
-    shinyWidgets
+    shinyWidgets,
+    shinycustomloader
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
