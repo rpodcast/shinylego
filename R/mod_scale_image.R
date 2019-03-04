@@ -1,0 +1,123 @@
+# Module UI
+#' @title   mod_scale_imageui and mod_scale_image
+#' @description  A shiny Module that ...
+#'
+#' @param id shiny id
+#'
+#' @export 
+#' @importFrom shiny NS tagList 
+#' @import shinyWidgets
+#' @examples 
+mod_scale_imageui <- function(id){
+  ns <- NS(id)
+  tagList(
+    bs4Box(
+      title = "Scale Image",
+      width = 12,
+      tagList(
+        fluidRow(
+          col_3(
+            shinyWidgets::prettyRadioButtons(
+              ns("shape"),
+              "Shape",
+              choices = c(
+                "Square",
+                "Rectangle"
+              ),
+              inline = TRUE,
+              status = "primary",
+              fill = TRUE,
+              animation = "smooth" 
+            )
+          ),
+          col_3(
+            numericInput(
+              ns("width"),
+              "Length (bricks)",
+              value = 48,
+              min = 12,
+              max = 1000,
+              step = 1,
+            )
+          ),
+          col_3(
+            sliderInput(
+              ns("brightness"),
+              "Brightness",
+              min = 0,
+              max = 10,
+              value = 1,
+              step = 1
+            )
+          ),
+          col_3(
+            shinyWidgets::prettyRadioButtons(
+              ns("theme"),
+              "Theme",
+              choiceNames = c(
+                "Color",
+                "Black & White"
+              ),
+              choiceValues = c(
+                "default",
+                "bw"
+              ),
+              inline = TRUE,
+              status = "primary",
+              fill = TRUE,
+              animation = "smooth" 
+            )
+          )
+        ),
+        fluidRow(
+          col_12(
+            plotOutput(ns("mosaic_2d"))
+          )
+        )
+      )
+    )
+  )
+}
+    
+# Module server
+#' mod_scale_image server function
+#'
+#' @param input internal
+#' @param output internal
+#' @param session internal
+#'
+#' @export
+#' @rdname mod_scale_imageui
+    
+mod_scale_image <- function(input, output, session, img_processed){
+  ns <- session$ns
+  
+  # reactive object for lego version of image
+  image_lego <- reactive({
+    req(img_processed())
+    res <- scale_image(image = img_processed()$image_obj,
+                img_size = input$width,
+                brightness = input$brightness,
+                warhol = 1:3) %>%
+      legoize(theme = input$theme, contrast = 1) %>%
+      collect_bricks(mosaic_type = "flat")
+    
+    return(res)
+  })
+  
+  # reactive for plot object
+  image_obj <- reactive({
+    display_set(image_lego(), title = NULL)
+  })
+  
+  output$mosaic_2d <- renderPlot({
+    print(image_obj())
+  })
+}
+    
+## To be copied in the UI
+# mod_scale_imageui("m1")
+    
+## To be copied in the server
+# callModule(mod_scale_image, "m1")
+ 

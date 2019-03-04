@@ -9,8 +9,8 @@ app_ui <- function() {
     navbar = bs4DashNavbar(
       skin = "dark",
       status = "primary",
-      "Navbar text",
-      fixed = TRUE
+      "Navbar text"
+      #fixed = TRUE
     ),
     
     # left sidebar
@@ -31,23 +31,38 @@ app_ui <- function() {
           "Welcome",
           tabName = "welcome",
           icon = 'info'
+        ),
+        bs4SidebarMenuItem(
+          "Create",
+          tabName = "create",
+          icon = 'palette'
         )
       )
     ),
     
     # main body
     body = bs4DashBody(
-      bs4TabItem(
-        tabName = "welcome",
-        bs4Jumbotron(
-          title = "Welcome to the app!",
-          lead = "This is the small text appearing right below the title",
-          tagList(
+      bs4TabItems(
+        bs4TabItem(
+          tabName = "welcome",
+          bs4Jumbotron(
+            title = "Welcome to the app!",
+            lead = "This is the small text appearing right below the title",
+            #tagList(
             "This is text that could be any element",
-            mod_upload_graphicui("m1")
-          ),
-          status = "primary",
-          href = "https://r-podcast.org"
+            mod_upload_graphicui("m1"),
+            #),
+            status = "primary",
+            href = "https://r-podcast.org"
+          )
+        ),
+        bs4TabItem(
+          tabName = "create", 
+          #fluidRow(
+            #col_12(
+              mod_scale_imageui("m2")
+            #)
+          #)
         )
       )
     ),
