@@ -36,6 +36,11 @@ app_ui <- function() {
           "Create",
           tabName = "create",
           icon = 'palette'
+        ),
+        bs4SidebarMenuItem(
+          "Instructions",
+          tabName = "instructions",
+          icon = 'book-open'
         )
       )
     ),
@@ -63,6 +68,9 @@ app_ui <- function() {
               mod_scale_imageui("m2")
             #)
           #)
+        ),
+        bs4TabItem(
+          tabName = "instructions"
         )
       )
     ),
