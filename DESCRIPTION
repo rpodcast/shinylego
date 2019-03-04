@@ -28,7 +28,8 @@ Imports:
     magick,
     rgl,
     bs4Dash (>= 0.3.0),
-    fs
+    fs,
+    shinyWidgets
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
