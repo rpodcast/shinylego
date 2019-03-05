@@ -188,7 +188,7 @@ legoize <- function(image_list, theme = "default", contrast = 1){
 #' @param mosaic_type String for mosaic type to produce. A `flat` mosaic
 #'   places a single layer of LEGO plates on a base plate with study-side up.
 #'   A `stacked` mosaic staggers bricks and places them horizontally. 
-#' 
+#' @param Number of steps 
 #' @import dplyr
 #' @import tidyr
 #' @return list with following components:
@@ -204,7 +204,7 @@ legoize <- function(image_list, theme = "default", contrast = 1){
 #' res <- scale_image(image, img_size = 48) %>%
 #'   legoize() %>%
 #'   collect_bricks()
-collect_bricks <- function(image_list, mosaic_type = "flat"){
+collect_bricks <- function(image_list, mosaic_type = "flat", num_steps = NULL){
   in_list <- image_list
   
   if(mosaic_type == "flat"){
@@ -314,7 +314,56 @@ collect_bricks <- function(image_list, mosaic_type = "flat"){
   in_list[["mosaic_type"]] <- mosaic_type
   in_list[["pieces"]] <- pcs
   
+  if (!is.null(num_steps)) {
+    steps_df <- generate_steps(img2, mosaic_type = mosaic_type, num_steps = num_steps)
+    
+    # grab unique step IDs
+    step_ids <- unique(steps_df$Step)
+    
+    # create tidy data frame used for pieces plots
+    pcs_steps_all <- map_dfr(step_ids, ~count_bricks(df = steps_df, step_id = .x))
+    
+    in_list[["steps_data"]] <- steps_df
+    in_list[["pieces_step"]] <- pcs_steps_all
+  }
+  
   return(in_list)
+}
+
+#' Utility function to create tidy pieces data frame tailored to specific steps
+#'
+#' @param df data frame produced by [generate_steps()]
+#' @param step_id which step to filter. Format is `Step 01`, etc.
+#' @param mosaic_type String for mosaic type to produce. A `flat` mosaic
+#'   places a single layer of LEGO plates on a base plate with study-side up.
+#'   A `stacked` mosaic staggers bricks and places them horizontally. 
+#'
+#' @import dplyr
+#' @import tidyr
+#' @return data frame corresponding to same format as the `pieces` data frame
+#'   produced by [collect_bricks()]
+#' @export
+count_bricks <- function(df, step_id, mosaic_type = "flat") {
+  # This is very brute-force. Probably a much cleaner way to do this
+  pcs <- df %>% 
+    filter(Step == !!step_id) %>%
+    select(Brick, brick_id, Lego_name, Lego_color) %>% 
+    distinct() %>% 
+    separate(Brick, c("g", "gn", "size", "gi")) %>% 
+    select(-dplyr::starts_with("g")) %>% 
+    mutate(size1 = as.numeric(substr(size, 2, 2)), 
+           size2 = as.numeric(substr(size, 4, 4))) %>% 
+    mutate(Brick_size = ifelse(size1>size2, paste(size1, "x", size2), paste(size2, "x" , size1))) %>% 
+    count(Brick_size, Lego_name, Lego_color) %>%
+    mutate(Step = !!step_id)
+  
+  #Replace "x 1" bricks with "x 2". More likely to be used for a stacked mosaic
+  if(mosaic_type == "stacked"){
+    pcs <- pcs %>% 
+      mutate(Brick_size = gsub("x 1", "x 2", Brick_size, fixed = TRUE))
+  }
+  
+  return(pcs)
 }
 
 #' Render the LEGO mosaic as a `ggplot`
@@ -364,14 +413,19 @@ display_set <- function(image_list, title=NULL){
   return(img)
 } 
 
-#' Produce tidy data set for building instructions
+#' Utility function to produce tidy data set for building instructions
 #'
-#' @param image_list List of objects produced by [collect_bricks()]
+#' @param Img_bricks data frame with bricks information
+#' @param mosaic_type tring for mosaic type to produce. A `flat` mosaic
+#'   places a single layer of LEGO plates on a base plate with study-side up.
+#'   A `stacked` mosaic staggers bricks and places them horizontally. 
 #' @param num_steps Number of steps for the instructions. Default is 6.
 #'
 #' @import dplyr
 #' @import purrr
-#' @return list with new slot containing `tibble` of the instructions
+#' @return tidy data frame with step information
+#' @note This is meant to be run inside of the [collect_bricks()] but it could
+#'   be run with the specific `Img_bricks` object produced by that function.
 #' @export
 #'
 #' @examples
@@ -381,12 +435,10 @@ display_set <- function(image_list, title=NULL){
 #'   legoize() %>%
 #'   collect_bricks()
 #'   
-#' res_steps <- generate_steps(res)
-#' 
-generate_steps <- function(image_list, num_steps=6) {
-  in_list <- image_list
-  image <- in_list$Img_bricks
-  type <- in_list$mosaic_type
+#' res_steps <- generate_steps(res$Img_bricks, num_steps = 8)
+generate_steps <- function(Img_bricks, mosaic_type = "flat", num_steps=6) {
+  image <- Img_bricks
+  type <- mosaic_type
   
   num_steps <- min(round(num_steps), 40)
   
@@ -417,13 +469,12 @@ generate_steps <- function(image_list, num_steps=6) {
     map(create_steps, num_steps) %>% 
     bind_rows()
   
-  in_list[['steps']] <- res
-  return(in_list)
+  return(res)
 }
 
 #' Display plot with instructions at all or specific step
 #'
-#' @param steps_df `tibble` of the bricks required at each step
+#' @param list of objects produced by [collect_bricks()]
 #' @param step_id Optional index of step to print. If `NULL` 
 #'   (default), all steps are plotted.
 #'
@@ -442,9 +493,9 @@ plot_instructions <- function(image_list, step_id = NULL) {
   all_y_min <- min(in_list$steps$ymin)
 
   if (!is.null(step_id)) {
-    steps_df <- filter(in_list[['steps']], Step %in% step_id)
+    steps_df <- filter(in_list[['steps_data']], Step %in% step_id)
   } else {
-    steps_df <- in_list[['steps']]
+    steps_df <- in_list[['steps_data']]
   }
   
   #Ratio of the "pixels" is different for flat or stacked bricks
@@ -568,6 +619,9 @@ table_pieces <- function(image_list){
 #' Visualize required pieces for mosaic
 #'
 #' @param image_list List of objects produced by [collect_bricks()]
+#' @step_id Optional step ID to use for pieces. If specified, ensure that
+#'   the `image_list` passed to the function contains a slot called 
+#'   `pieces_steps`.
 #'
 #' @import ggplot2
 #' @import dplyr
@@ -586,9 +640,16 @@ table_pieces <- function(image_list){
 #'   collect_bricks()
 #'   
 #' display_pieces(res)
-display_pieces <- function(image_list){
+display_pieces <- function(image_list, step_id = NULL){
   in_list <- image_list
-  pcs <- in_list$pieces
+  
+  if (!is.null(step_id)) {
+    pcs <- in_list$pieces_step %>%
+      filter(Step == !!step_id)
+  } else {
+    pcs <- in_list$pieces
+  }
+  
   
   if(in_list$mosaic_type == "flat"){
     pcs_coords <- tibble(
@@ -597,7 +658,10 @@ display_pieces <- function(image_list){
       xmax = c(1, 2, 3, 4, 8, 8),
       ymin = c(0, 2, 4, 6, 0, 3),
       ymax = c(1, 3, 5, 7, 2, 7)
-    ) 
+    )
+    
+    type_text <- "Plates"
+    caption_text <- ""
   } else {
     pcs_coords <- tibble(
       Brick_size = c("1 x 2", "2 x 2", "3 x 2", "4 x 2"),
@@ -605,7 +669,10 @@ display_pieces <- function(image_list){
       xmax = c(2, 7, 7, 2),
       ymin = c(0, 0, 3, 2),
       ymax = c(1, 2, 6, 6)
-    ) 
+    )
+    
+    type_text <- "Bricks"
+    caption_text <- "Mosaic is 2-bricks deep. Can substitute 2-stud bricks for 1-stud alternatives for a thinner mosaic."
   }
   #This function creates nodes in each brick for stud placement
   pcs_coords <- pcs_coords %>% 
@@ -629,7 +696,7 @@ display_pieces <- function(image_list){
     coord_xlim <- c(-0.5, 9)
     facet_cols <- 6
   }
-  
+  glue::glue("Suggested LEGO {type_text}")
   pcs2 %>% 
     ggplot() +
     geom_rect(aes(xmin=xmin, xmax=xmax, ymin=-ymin, ymax=-ymax,
@@ -641,11 +708,8 @@ display_pieces <- function(image_list){
     geom_text(aes(x = xmax + 0.25, y = -(ymin+ymax)/2, label = paste0("x", n)), 
               hjust = 0, vjust = 0.5, size = 3.5) +
     coord_fixed(xlim = coord_xlim) +
-    labs(title = (if(in_list$mosaic_type == "stacked"){
-      "Suggested LEGO Bricks"
-    }else{"Suggested LEGO Plates"}),
-    caption = (if(in_list$mosaic_type == "stacked"){
-      "Mosaic is 2-bricks deep. Can substitute 2-stud bricks for 1-stud alternatives for a thinner mosaic."}else{""})) +
+    labs(title = glue::glue("Suggested LEGO {type_text}"),
+    caption = caption_text) +
     facet_wrap(~Lego_name, ncol=facet_cols) +
     theme_minimal()+
     theme_lego() +
