@@ -1,0 +1,10 @@
+name: shinylego
+title:
+username:
+account: rpodcast
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 770976
+bundleId: 1920884
+url: https://rpodcast.shinyapps.io/shinylego/
+when: 1551910483.72486
