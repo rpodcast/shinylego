@@ -31,15 +31,8 @@ mod_scale_imageui <- function(id){
               animation = "smooth" 
             )
           ),
-          col_3(
-            numericInput(
-              ns("width"),
-              "Length (bricks)",
-              value = 48,
-              min = 12,
-              max = 1000,
-              step = 1,
-            )
+          col_2(
+            uiOutput(ns("dimension_placeholder"))
           ),
           col_3(
             sliderInput(
@@ -69,12 +62,12 @@ mod_scale_imageui <- function(id){
               animation = "smooth" 
             )
           )
-        ),
-        fluidRow(
-          col_12(
-            withLoader(plotOutput(ns("mosaic_2d")), type = "image", loader = "lego_loader.gif")
-          )
         )
+        # fluidRow(
+        #   col_12(
+        #     withLoader(plotOutput(ns("mosaic_2d")), type = "image", loader = "lego_loader.gif")
+        #   )
+        # )
       )
     )
   )
@@ -93,11 +86,69 @@ mod_scale_imageui <- function(id){
 mod_scale_image <- function(input, output, session, img_processed){
   ns <- session$ns
   
+  # dynamic output for shape dimensions
+  # if "square": display only one number
+  # if "rectangle": display separate inputs for width and height
+  output$dimension_placeholder <- renderUI({
+    ns <- session$ns
+    
+    if (input$shape == "Square") {
+      ui <- numericInput(
+              ns("dimension_width"),
+              "Plate size",
+              value = 48,
+              min = 12,
+              max = 1000,
+              step = 1,
+            )
+    } else {
+      ui <- tagList(
+        fluidRow(
+          col_6(
+            numericInput(
+              ns("dimension_width"),
+              "Plate width",
+              value = 48,
+              min = 12,
+              max = 1000,
+              step = 1,
+            )
+          ),
+          col_6(
+            numericInput(
+              ns("dimension_height"),
+              "Plate height",
+              value = 48,
+              min = 12,
+              max = 1000,
+              step = 1,
+            )
+          )
+        )
+      )
+    }
+    
+    return(ui)
+  })
+  
+  # reactive for dimension vector
+  dimension_obj <- reactive({
+    req(input$dimension_width)
+    if (input$shape == "Square") {
+      res <- input$dimension_width
+    } else {
+      res <- c(input$dimension_width, input$dimension_height)
+    }
+    
+    return(res)
+  })
+  
   # reactive object for lego version of image
   image_lego <- reactive({
     req(img_processed())
+    req(dimension_obj())
     res <- scale_image(image = img_processed()$image_obj,
-                img_size = input$width,
+                img_size = dimension_obj(),
                 brightness = input$brightness,
                 warhol = 1:3) %>%
       legoize(theme = input$theme, contrast = 1) %>%
@@ -106,14 +157,18 @@ mod_scale_image <- function(input, output, session, img_processed){
     return(res)
   })
   
-  # reactive for plot object
-  image_obj <- reactive({
-    display_set(image_lego(), title = NULL)
-  })
+  # # reactive for plot object
+  # image_obj <- reactive({
+  #   display_set(image_lego(), title = NULL)
+  # })
+  # 
+  # # display 2d lego plot
+  # output$mosaic_2d <- renderPlot({
+  #   print(image_obj())
+  # })
   
-  output$mosaic_2d <- renderPlot({
-    print(image_obj())
-  })
+  # return objects
+  image_lego
 }
     
 ## To be copied in the UI
