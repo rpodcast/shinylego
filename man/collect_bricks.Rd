@@ -4,7 +4,7 @@
 \alias{collect_bricks}
 \title{Collect required bricks for mosaic}
 \usage{
-collect_bricks(image_list, mosaic_type = "flat")
+collect_bricks(image_list, mosaic_type = "flat", num_steps = NULL)
 }
 \arguments{
 \item{image_list}{list object containing the \code{Img_scaled} data frame
@@ -13,6 +13,8 @@ as produced by the \code{\link[=legoize]{legoize()}} function.}
 \item{mosaic_type}{String for mosaic type to produce. A \code{flat} mosaic
 places a single layer of LEGO plates on a base plate with study-side up.
 A \code{stacked} mosaic staggers bricks and places them horizontally.}
+
+\item{Number}{of steps}
 }
 \value{
 list with following components:
