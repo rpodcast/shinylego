@@ -4,7 +4,7 @@
 \alias{display_pieces}
 \title{Visualize required pieces for mosaic}
 \usage{
-display_pieces(image_list)
+display_pieces(image_list, step_id = NULL)
 }
 \arguments{
 \item{image_list}{List of objects produced by \code{\link[=collect_bricks]{collect_bricks()}}}

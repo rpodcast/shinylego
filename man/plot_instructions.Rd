@@ -10,7 +10,7 @@ plot_instructions(image_list, step_id = NULL)
 \item{step_id}{Optional index of step to print. If \code{NULL}
 (default), all steps are plotted.}
 
-\item{steps_df}{\code{tibble} of the bricks required at each step}
+\item{list}{of objects produced by \code{\link[=collect_bricks]{collect_bricks()}}}
 }
 \description{
 Display plot with instructions at all or specific step

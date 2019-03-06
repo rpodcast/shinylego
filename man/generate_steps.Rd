@@ -2,20 +2,28 @@
 % Please edit documentation in R/lego_functions.R
 \name{generate_steps}
 \alias{generate_steps}
-\title{Produce tidy data set for building instructions}
+\title{Utility function to produce tidy data set for building instructions}
 \usage{
-generate_steps(image_list, num_steps = 6)
+generate_steps(Img_bricks, mosaic_type = "flat", num_steps = 6)
 }
 \arguments{
-\item{image_list}{List of objects produced by \code{\link[=collect_bricks]{collect_bricks()}}}
+\item{Img_bricks}{data frame with bricks information}
+
+\item{mosaic_type}{tring for mosaic type to produce. A \code{flat} mosaic
+places a single layer of LEGO plates on a base plate with study-side up.
+A \code{stacked} mosaic staggers bricks and places them horizontally.}
 
 \item{num_steps}{Number of steps for the instructions. Default is 6.}
 }
 \value{
-list with new slot containing \code{tibble} of the instructions
+tidy data frame with step information
 }
 \description{
-Produce tidy data set for building instructions
+Utility function to produce tidy data set for building instructions
+}
+\note{
+This is meant to be run inside of the \code{\link[=collect_bricks]{collect_bricks()}} but it could
+be run with the specific \code{Img_bricks} object produced by that function.
 }
 \examples{
 img_file <- system.file("images", "kde_konqi_mascot.jpg", package = "shinylego")
@@ -24,6 +32,5 @@ res <- scale_image(image, img_size = 48) \%>\%
   legoize() \%>\%
   collect_bricks()
   
-res_steps <- generate_steps(res)
-
+res_steps <- generate_steps(res$Img_bricks, num_steps = 8)
 }
