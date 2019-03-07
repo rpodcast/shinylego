@@ -26,6 +26,11 @@ lego_colors <- readr::read_csv("data-raw/Lego_Colors.csv",
 
 lego_colors <- lego_colors %>%
   filter(c_Palette2016, !c_Transparent, !c_Glow, !c_Metallic) %>% 
+  mutate(hex_code = purrr::pmap_chr(
+    list(red = R, green = G, blue = B), 
+    function(red, green, blue) { rgb(red, green, blue, maxColorValue = 255) }
+    )
+  ) %>%
   mutate_at(vars(R, G, B), list(~ ./255)) %>% 
   rename(R_lego = R, G_lego = G, B_lego = B)%>% 
   mutate_at(vars(starts_with("w_")), list(~ ifelse(is.na(.), 0, .)))
