@@ -30,7 +30,8 @@ Imports:
     shinyWidgets,
     shinycustomloader,
     pkgload,
-    rmarkdown
+    rmarkdown,
+    shinyjs
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
