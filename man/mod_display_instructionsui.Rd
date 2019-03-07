@@ -5,7 +5,7 @@
 \alias{mod_display_instructions}
 \title{mod_display_instructionsui and mod_display_instructions}
 \usage{
-mod_display_instructionsui(id)
+mod_display_instructionsui(id, height_window = 600)
 
 mod_display_instructions(input, output, session, steps_obj, step_choice)
 }
