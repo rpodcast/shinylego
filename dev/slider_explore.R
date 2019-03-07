@@ -4,7 +4,7 @@ library(shinyWidgets)
 # With Modern design
 
 ui <- fluidPage(
-  chooseSliderSkin("Modern"),
+  chooseSliderSkin("HTML5"),
   sliderInput("obs", "Customized single slider:",
               min = 0, max = 100, value = 50
   ),

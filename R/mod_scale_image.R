@@ -12,62 +12,75 @@
 mod_scale_imageui <- function(id){
   ns <- NS(id)
   tagList(
-    bs4Box(
-      title = "Scale Image",
-      width = 12,
-      tagList(
-        fluidRow(
-          col_3(
-            shinyWidgets::prettyRadioButtons(
-              ns("shape"),
-              "Shape",
-              choices = c(
-                "Square",
-                "Rectangle"
+    shinyjs::hidden(
+      div(
+        id = ns("lego_controls"),
+        bs4Card(
+          title = "Customize LEGO Mosiac Settings",
+          status = "primary",
+          solidHeader = FALSE,
+          collapsible = TRUE,
+          collapsed = FALSE,
+          closable = FALSE,
+          labelStatus = "primary",
+          labelText = "",
+          width = 12,
+          tagList(
+            fluidRow(
+              col_3(
+                shinyWidgets::prettyRadioButtons(
+                  ns("shape"),
+                  "Shape",
+                  choices = c(
+                    "Square",
+                    "Rectangle"
+                  ),
+                  inline = TRUE,
+                  status = "primary",
+                  fill = TRUE,
+                  animation = "smooth" 
+                )
               ),
-              inline = TRUE,
-              status = "primary",
-              fill = TRUE,
-              animation = "smooth" 
-            )
-          ),
-          col_2(
-            uiOutput(ns("dimension_placeholder"))
-          ),
-          col_3(
-            sliderInput(
-              ns("brightness"),
-              "Brightness",
-              min = 0,
-              max = 10,
-              value = 1,
-              step = 1
-            )
-          ),
-          col_3(
-            shinyWidgets::prettyRadioButtons(
-              ns("theme"),
-              "Theme",
-              choiceNames = c(
-                "Color",
-                "Black & White"
+              col_2(
+                uiOutput(ns("dimension_placeholder"))
               ),
-              choiceValues = c(
-                "default",
-                "bw"
+              col_3(
+                sliderInput(
+                  ns("brightness"),
+                  "Brightness",
+                  min = 0,
+                  max = 10,
+                  value = 1,
+                  step = 1
+                )
               ),
-              inline = TRUE,
-              status = "primary",
-              fill = TRUE,
-              animation = "smooth" 
+              col_3(
+                shinyWidgets::radioGroupButtons(
+                  ns("theme"),
+                  label = "Theme",
+                  choiceNames = c(
+                    "Color",
+                    "Black & White"
+                  ),
+                  choiceValues = c(
+                    "default",
+                    "bw"
+                  ),
+                  justified = TRUE,
+                  status = "primary",
+                  checkIcon = list(
+                    yes = icon("ok", lib = "glyphicon")
+                  )
+                )
+              )
             )
+            # fluidRow(
+            #   col_12(
+            #     withLoader(plotOutput(ns("mosaic_2d")), type = "image", loader = "lego_loader.gif")
+            #   )
+            # )
           )
         )
-        # fluidRow(
-        #   col_12(
-        #     withLoader(plotOutput(ns("mosaic_2d")), type = "image", loader = "lego_loader.gif")
-        #   )
-        # )
       )
     )
   )
@@ -86,6 +99,14 @@ mod_scale_imageui <- function(id){
 mod_scale_image <- function(input, output, session, img_processed){
   ns <- session$ns
   
+  # show lego image controls when img_processed is valid
+  observeEvent(img_processed()$image_obj, {
+    if (!isTruthy(img_processed()$image_obj)) {
+      return(NULL)
+    } else {
+      shinyjs::show('lego_controls')
+    }
+  })
   # dynamic output for shape dimensions
   # if "square": display only one number
   # if "rectangle": display separate inputs for width and height

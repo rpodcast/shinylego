@@ -493,7 +493,7 @@ generate_steps <- function(Img_bricks, mosaic_type = "flat", num_steps=6) {
 
 #' Display plot with instructions at all or specific step
 #'
-#' @param list of objects produced by [collect_bricks()]
+#' @param steps_df data frame produced by [generate_steps()]
 #' @param step_id Optional index of step to print. If `NULL` 
 #'   (default), all steps are plotted.
 #'
@@ -501,20 +501,17 @@ generate_steps <- function(Img_bricks, mosaic_type = "flat", num_steps=6) {
 #' @export
 #'
 #' @examples
-plot_instructions <- function(image_list, step_id = NULL) {
+plot_instructions <- function(steps_df, mosaic_type = "flat", step_id = NULL) {
   
-  in_list <- image_list
-  type <- in_list$mosaic_type
+  type <- mosaic_type
   
-  all_x_max <- max(in_list$steps$xmax)
-  all_x_min <- min(in_list$steps$xmin)
-  all_y_max <- max(in_list$steps$ymax)
-  all_y_min <- min(in_list$steps$ymin)
+  all_x_max <- max(steps_df$xmax)
+  all_x_min <- min(steps_df$xmin)
+  all_y_max <- max(steps_df$ymax)
+  all_y_min <- min(steps_df$ymin)
 
   if (!is.null(step_id)) {
-    steps_df <- filter(in_list[['steps_data']], Step %in% step_id)
-  } else {
-    steps_df <- in_list[['steps_data']]
+    steps_df <- filter(steps_df, Step %in% step_id)
   }
   
   #Ratio of the "pixels" is different for flat or stacked bricks
@@ -637,7 +634,8 @@ table_pieces <- function(image_list){
 
 #' Visualize required pieces for mosaic
 #'
-#' @param image_list List of objects produced by [collect_bricks()]
+#' @param pieces_step data frame with bricks required at each step as produced by [step_pieces()]
+#' @param mosaic_type String for mosaic type. Default is `flat`
 #' @step_id Optional step ID to use for pieces. If specified, ensure that
 #'   the `image_list` passed to the function contains a slot called 
 #'   `pieces_steps`.
@@ -659,18 +657,18 @@ table_pieces <- function(image_list){
 #'   collect_bricks()
 #'   
 #' display_pieces(res)
-display_pieces <- function(image_list, step_id = NULL){
-  in_list <- image_list
+display_pieces <- function(pieces_step, mosaic_type = "flat", step_id = NULL){
+  #in_list <- image_list
   
   if (!is.null(step_id)) {
-    pcs <- in_list$pieces_step %>%
+    pcs <- pieces_step %>%
       filter(Step == !!step_id)
   } else {
-    pcs <- in_list$pieces
+    pcs <- pieces_step
   }
   
   
-  if(in_list$mosaic_type == "flat"){
+  if(mosaic_type == "flat"){
     pcs_coords <- tibble(
       Brick_size = c("1 x 1", "2 x 1", "3 x 1", "4 x 1", "2 x 2", "4 x 2"),
       xmin = c(0, 0, 0, 0, 6, 6),
@@ -708,7 +706,7 @@ display_pieces <- function(image_list, step_id = NULL){
                                          "White"))) %>% 
     left_join(pcs_coords, by = "Brick_size")
   
-  if(in_list$mosaic_type == "flat"){
+  if(mosaic_type == "flat"){
     coord_xlim <- c(-0.5, 10)
     facet_cols <- 5
   } else {

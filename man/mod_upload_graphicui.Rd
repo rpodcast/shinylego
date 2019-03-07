@@ -5,12 +5,14 @@
 \alias{mod_upload_graphic}
 \title{mod_upload_graphicui and mod_upload_graphic}
 \usage{
-mod_upload_graphicui(id)
+mod_upload_graphicui(id, label_text = NULL)
 
-mod_upload_graphic(input, output, session, width = 400, height = 400)
+mod_upload_graphic(input, output, session)
 }
 \arguments{
 \item{id}{shiny id}
+
+\item{label_text}{Optional string for \code{\link[shiny:fileInput]{shiny::fileInput()}} widget}
 
 \item{input}{internal}
 

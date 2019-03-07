@@ -4,13 +4,13 @@
 \alias{plot_instructions}
 \title{Display plot with instructions at all or specific step}
 \usage{
-plot_instructions(image_list, step_id = NULL)
+plot_instructions(steps_df, mosaic_type = "flat", step_id = NULL)
 }
 \arguments{
+\item{steps_df}{data frame produced by \code{\link[=generate_steps]{generate_steps()}}}
+
 \item{step_id}{Optional index of step to print. If \code{NULL}
 (default), all steps are plotted.}
-
-\item{list}{of objects produced by \code{\link[=collect_bricks]{collect_bricks()}}}
 }
 \description{
 Display plot with instructions at all or specific step

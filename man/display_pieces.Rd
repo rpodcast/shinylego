@@ -4,10 +4,12 @@
 \alias{display_pieces}
 \title{Visualize required pieces for mosaic}
 \usage{
-display_pieces(image_list, step_id = NULL)
+display_pieces(pieces_step, mosaic_type = "flat", step_id = NULL)
 }
 \arguments{
-\item{image_list}{List of objects produced by \code{\link[=collect_bricks]{collect_bricks()}}}
+\item{pieces_step}{data frame with bricks required at each step as produced by \code{\link[=step_pieces]{step_pieces()}}}
+
+\item{mosaic_type}{String for mosaic type. Default is \code{flat}}
 }
 \value{
 \code{ggplot} plot object showing number of required bricks faceted by

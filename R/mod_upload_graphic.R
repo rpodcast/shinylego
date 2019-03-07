@@ -3,22 +3,22 @@
 #' @description  A shiny Module that ...
 #'
 #' @param id shiny id
+#' @param label_text Optional string for [shiny::fileInput()] widget
 #'
 #' @export 
-#' @importFrom shiny NS tagList 
+#' @importFrom shiny NS tagList fileInput
 #' @examples 
-mod_upload_graphicui <- function(id){
+mod_upload_graphicui <- function(id, label_text = NULL){
   ns <- NS(id)
   tagList(
     fileInput(
       ns("image_upload"),
-      "Choose image file",
+      label = label_text,
       multiple = FALSE,
       accept = NULL,
       buttonLabel = "Browse...",
-      placeholder = "Please select an image file"
-    ),
-    imageOutput(ns("image_render"))
+      placeholder = "JPEG and PNG formats supported"
+    )
   )
 }
     
@@ -35,7 +35,7 @@ mod_upload_graphicui <- function(id){
 #' @export
 #' @rdname mod_upload_graphicui
     
-mod_upload_graphic <- function(input, output, session, width = 400, height = 400){
+mod_upload_graphic <- function(input, output, session){
   ns <- session$ns
   
   # reactive for processed image file
@@ -66,15 +66,6 @@ mod_upload_graphic <- function(input, output, session, width = 400, height = 400
       )
     )
   })
-  
-  # display image
-  output$image_render <- renderImage({
-    list(
-      src = img_processed()$image_path,
-      width = width,
-      height = height
-    )
-  }, deleteFile = FALSE)
   
   # assemble return object
   img_processed

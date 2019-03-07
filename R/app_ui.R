@@ -6,14 +6,13 @@ app_ui <- function() {
     golem::js(),
     bs4DashPage(
       title = "ShinyLEGO",
-      sidebar_collapsed = TRUE,
+      sidebar_collapsed = FALSE,
       
       # navigation bar
       navbar = bs4DashNavbar(
         skin = "dark",
         status = "primary",
         "Navbar text"
-        #fixed = TRUE
       ),
       
       # left sidebar
@@ -50,6 +49,8 @@ app_ui <- function() {
       
       # main body
       body = bs4DashBody(
+        shinyjs::useShinyjs(),
+        shinyWidgets::chooseSliderSkin("HTML5"),
         bs4TabItems(
           bs4TabItem(
             tabName = "welcome",
@@ -58,7 +59,7 @@ app_ui <- function() {
               lead = "This is the small text appearing right below the title",
               #tagList(
               "This is text that could be any element",
-              mod_upload_graphicui("m1"),
+              
               #),
               status = "primary",
               href = "https://r-podcast.org"
@@ -66,18 +67,101 @@ app_ui <- function() {
           ),
           bs4TabItem(
             tabName = "create", 
+            fluidRow(
+              col_12(
+                bs4Card(
+                  title = "Upload your image!",
+                  status = "primary",
+                  solidHeader = FALSE,
+                  collapsible = TRUE,
+                  collapsed = FALSE,
+                  closable = FALSE,
+                  labelStatus = "primary",
+                  labelText = "",
+                  width = 12,
+                  h3("Choose an image for your LEGO mosaic! File formats supported are JPEG, JPG, and PNG."),
+                  mod_upload_graphicui("m1")
+                )
+              )
+            ),
             mod_scale_imageui("m2"),
             fluidRow(
               col_6(
-                mod_display_lego_2dui("m3")
+                bs4Card(
+                  title = "Original Image",
+                  status = "primary",
+                  solidHeader = FALSE,
+                  collapsible = TRUE,
+                  collapsed = FALSE,
+                  closable = FALSE,
+                  labelStatus = "primary",
+                  labelText = "",
+                  width = 12,
+                  mod_display_imageui("image")
+                )
+              ),
+              col_6(
+                bs4Card(
+                  title = "LEGO Mosaic!",
+                  status = "primary",
+                  solidHeader = FALSE,
+                  collapsible = TRUE,
+                  collapsed = FALSE,
+                  closable = FALSE,
+                  labelStatus = "primary",
+                  labelText = "",
+                  width = 12,
+                  mod_display_lego_2dui("m3")
+                )
               )
-              # col_6(
-              #   mod_display_lego_3dui("m4")
-              # )
             )
           ),
           bs4TabItem(
-            tabName = "instructions"
+            tabName = "instructions",
+            fluidRow(
+              col_12(
+                mod_define_stepsui("inst_steps")
+              )
+            ),
+            fluidRow(
+              col_12(
+                mod_choose_stepui("choice_steps")
+              )
+            ),
+            fluidRow(
+              col_12(
+                bs4Card(
+                  title = "Bricks Required",
+                  status = "primary",
+                  solidHeader = FALSE,
+                  collapsible = TRUE,
+                  collapsed = FALSE,
+                  closable = FALSE,
+                  labelStatus = "primary",
+                  labelText = "",
+                  width = 12,
+                  #"no way"
+                  mod_display_piecesui("inst_pieces")
+                )
+              )
+            ),
+            fluidRow(
+              col_12(
+                bs4Card(
+                  title = "Instructions",
+                  status = "primary",
+                  solidHeader = FALSE,
+                  collapsible = TRUE,
+                  collapsed = FALSE,
+                  closable = FALSE,
+                  labelStatus = "primary",
+                  labelText = "",
+                  width = 12,
+                  #"no way"
+                  mod_display_instructionsui("inst_display")
+                )
+              )
+            )
           )
         )
       ),
