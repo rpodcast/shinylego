@@ -11,8 +11,7 @@ app_ui <- function() {
       # navigation bar
       navbar = bs4DashNavbar(
         skin = "dark",
-        status = "primary",
-        "Navbar text"
+        status = "primary"
       ),
       
       # left sidebar
@@ -21,7 +20,6 @@ app_ui <- function() {
         status = "primary",
         title = "ShinyLEGO",
         brandColor = "primary",
-        url = "https://r-podcast.org",
         src = "LegoBackground.png",
         elevation = 3,
         opacity = 0.8,
@@ -55,14 +53,53 @@ app_ui <- function() {
           bs4TabItem(
             tabName = "welcome",
             bs4Jumbotron(
-              title = "Welcome to the app!",
-              lead = "This is the small text appearing right below the title",
-              #tagList(
-              "This is text that could be any element",
-              
-              #),
+              title = "Welcome to the LEGO Mosaic Maker!",
+              lead = "This is a Shiny application that lets you convert any picture to a LEGO mosaic directly from the comfort of your web browser!  Once you upload a picture, you can customize many settings.  This app would not be possible without the innovative R scripts created by Ryan Timpe!  Here are links to his excellent blog posts detailing the workflow:",
+              list_to_li(
+                list(
+                  tags$a(href = "http://www.ryantimpe.com/post/lego-mosaic1/", "How To: LEGO mosaics from photos using R & the tidyverse"),
+                  tags$a(href = "http://www.ryantimpe.com/post/lego-mosaic2/", "LEGO mosaics: Two weeks later"),
+                  tags$a(href = "http://www.ryantimpe.com/post/lego-mosaic3/", "LEGO mosaics: Part 3(D)")
+                )
+              ),
               status = "primary",
-              href = "https://r-podcast.org"
+              btn_name = "App GitHub Repository",
+              href = "https://gitlab.com/rpodcast/shinylego"
+            ),
+            fluidRow(
+              col_6(
+                bs4UserCard(
+                  title = "Application Developer",
+                  subtitle = "Eric Nantz",
+                  status = "info",
+                  width = 12,
+                  src = "www/pic_with_r_logo_github.jpg",
+                  p("Various Links:"),
+                  list_to_li(
+                    list(
+                      tags$a(href = "https://r-podcast.org", "The R-Podcast"),
+                      tags$a(href = "https://twitter.com/thercast", "Twitter: @thercast")
+                    )
+                  )
+                )
+              ),
+              col_6(
+                bs4UserCard(
+                  title = "Key Contributor",
+                  subtitle = "Ryan Timpe",
+                  status = "info",
+                  width = 12,
+                  src = "www/Ryan2018sq.jpg",
+                  p("Various Links:"),
+                  list_to_li(
+                    list(
+                      tags$a(href = "http://www.ryantimpe.com/", "ryantimpe.com/"),
+                      tags$a(href = "https://twitter.com/ryantimpe", "Twitter: @ryantimpe"),
+                      tags$a(href = "https://github.com/ryantimpe", "GitHub: ryantimpe")
+                    )
+                  )
+                )
+              )
             )
           ),
           bs4TabItem(
@@ -79,12 +116,18 @@ app_ui <- function() {
                   labelStatus = "primary",
                   labelText = "",
                   width = 12,
-                  h3("Choose an image for your LEGO mosaic! File formats supported are JPEG, JPG, and PNG."),
+                  h4("Choose an image for your LEGO mosaic! File formats supported are JPEG, JPG, and PNG."),
+                  p("Note: Conversion process may take some time for pictures with diverse color palettes."),
                   mod_upload_graphicui("m1")
                 )
               )
             ),
             mod_scale_imageui("m2"),
+            fluidRow(
+              col_12(
+                mod_mosaic_metricsui("overall_metrics")
+              )
+            ),
             fluidRow(
               col_6(
                 bs4Card(
@@ -129,24 +172,26 @@ app_ui <- function() {
               )
             ),
             fluidRow(
-              col_12(
-                bs4Card(
+              col_6(
+                bs4TabCard(
                   title = "Bricks Required",
-                  status = "primary",
+                  status = NULL,
                   solidHeader = FALSE,
-                  collapsible = TRUE,
-                  collapsed = FALSE,
-                  closable = FALSE,
-                  labelStatus = "primary",
-                  labelText = "",
                   width = 12,
-                  #"no way"
-                  mod_display_piecesui("inst_pieces")
+                  side = "right",
+                  bs4TabPanel(
+                    tabName = "Diagram",
+                    active = TRUE,
+                    mod_display_piecesui("inst_pieces")
+                  ),
+                  bs4TabPanel(
+                    tabName = "Table",
+                    active = FALSE,
+                    mod_table_piecesui("inst_table")
+                  )
                 )
-              )
-            ),
-            fluidRow(
-              col_12(
+              ),
+              col_6(
                 bs4Card(
                   title = "Instructions",
                   status = "primary",
@@ -166,20 +211,12 @@ app_ui <- function() {
         )
       ),
       
-      # right sidebar
-      controlbar = bs4DashControlbar(
-        skin = "dark",
-        title = "My right sidebar",
-        p("Hello"),
-        width = 300
-      ),
-      
       # footer
       footer = bs4DashFooter(
         copyrights = a(
-          href = "https://twitter.com/thercast",
+          href = "https://r-podcast.org",
           target = "_blank",
-          "@thercast"
+          "The R-Podcast"
         ),
         right_text = "2019"
       )

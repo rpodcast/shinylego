@@ -10,6 +10,9 @@ app_server <- function(input, output, session) {
   # scale module
   scale_obj <- callModule(mod_scale_image, "m2", upload_obj)
   
+  # display overall metrics
+  callModule(mod_mosaic_metrics, "overall_metrics", scale_obj)
+  
   # display 2d lego (all pieces)
   callModule(mod_display_lego_2d, "m3", scale_obj)
   
@@ -26,6 +29,9 @@ app_server <- function(input, output, session) {
   
   # display pieces required at selected step
   callModule(mod_display_pieces, "inst_pieces", lego_steps, step_choice)
+  
+  # display table version of pieces at selected step
+  callModule(mod_table_pieces, "inst_table", lego_steps, step_choice)
   
   # display instructions  at selected step
   callModule(mod_display_instructions, "inst_display", lego_steps, step_choice)
