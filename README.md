@@ -63,8 +63,12 @@ such as the following:
   - [`bs4Dash`](https://rinterface.github.io/bs4Dash/index.html):
     Bootstrap 4 shinydashboard using AdminLTE3 by [David
     Granjob](https://twitter.com/divadnojnarg) (part of the
-    [RinteRface](https://rinterface.com/)
-    initiative)
+    [RinteRface](https://rinterface.com/) initiative)
+  - [`shinyWidgets`](https://dreamrs.github.io/shinyWidgets/index.html):
+    Extend widgets available in Shiny by [Victor
+    Perrier](https://twitter.com/_pvictorr) (part of the
+    [dreamRs](https://www.dreamrs.fr/)
+    organization)
   - [`shinycustomloader`](https://emitanaka.github.io/shinycustomloader/):
     Add a custom loader for R shiny by [Emi
     Tanaka](https://emitanaka.github.io/)

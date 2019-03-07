@@ -52,6 +52,7 @@ In addition to Ryan Timpe's excellent R programs detailed above, this applicatio
 
 * [`shinyjs`](https://deanattali.com/shinyjs): Easily improve the user experience of your Shiny apps in seconds by [Dean Attali](https://deanattali.com/)
 * [`bs4Dash`](https://rinterface.github.io/bs4Dash/index.html): Bootstrap 4 shinydashboard using AdminLTE3  by [David Granjob](https://twitter.com/divadnojnarg) (part of the [RinteRface](https://rinterface.com/) initiative)
+* [`shinyWidgets`](https://dreamrs.github.io/shinyWidgets/index.html): Extend widgets available in Shiny by [Victor Perrier](https://twitter.com/_pvictorr) (part of the [dreamRs](https://www.dreamrs.fr/) organization) 
 * [`shinycustomloader`](https://emitanaka.github.io/shinycustomloader/): Add a custom loader for R shiny by [Emi Tanaka](https://emitanaka.github.io/)
 * [`DT`](https://rstudio.github.io/DT): R Interface to the jQuery Plug-in DataTables by [Yihui Xie](https://yihui.name/)
 * [`golem`](https://github.com/ThinkR-open/golem/): A framework for building robust Shiny Apps by [Vincent Guyader](https://github.com/VincentGuyader) and [Colin Fay](http://colinfay.me/) (part of the [R Task Force](https://rtask.thinkr.fr/) at [ThinkR](https://thinkr.fr/))
