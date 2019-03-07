@@ -15,42 +15,46 @@ knitr::opts_chunk$set(
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-# shinylego
+# ShinyLEGO: Create LEGO mosaics directly from R and Shiny
 
-The goal of shinylego is to ...
+__ShinyLEGO__ is a Shiny application that lets you create a simulated mosaic composed of LEGO bricks from any image file. Once your picture is uploaded, you can customize various settings for your mosaic such as dimensions, brightness, and color types.  In addition, the application will generate specific instructions so that you can build the mosaic yourself!  These instructions contain the brick colors and types required for each step, and a diagram showing how the bricks are to be assembled.  
+
+This application would not be possible without the innovative R scripts created by [Ryan Timpe](http://www.ryantimpe.com/)!  Ryan has written excellent blogposts detailing the workflow this application draws upon, and the code for each post can be found on his [LEGOMosaics GitHub repository](https://github.com/ryantimpe/LEGOMosaics):
+
+* [How To: LEGO mosaics from photos using R & the Tidyverse](http://www.ryantimpe.com/post/lego-mosaic1/)
+* [LEGO mosaics: Two weeks later](http://www.ryantimpe.com/post/lego-mosaic2/)
+* [LEGO mosaics: Part 3(D)](http://www.ryantimpe.com/post/lego-mosaic3/)
 
 ## Installation
 
-You can install the development version from [GitLab](https://gitlab.com) with:
+You can install the development version of `shinylego` from [GitHub](https://gitlab.com) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_gitlab("rpodcast/shinylego")
+remotes::install_github("rpodcast/shinylego")
 ```
 
-## Example
+## Usage
 
-This is a basic example which shows you how to solve a common problem:
+Once you have installed the package, you can run the application within your R session using the following command:
 
-```{r example}
-## basic example code
+```{r example, eval=FALSE}
+shinylego::run_app()
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+## Deployments
 
-```{r cars}
-summary(cars)
-```
+`shinylego` is also available on the Shinyapps.io hosting service at [shinyapps.io/rpodcast/shinylego](https://shinyapps.io/rpodcast/shinylego)
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+## Acknowlegements
 
-You can also embed plots, for example:
+In addition to Ryan Timpe's excellent R programs detailed above, this application utilizes many powerful packages in the `shiny` ecosystem such as the following:
 
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+* [`shinyjs`](https://deanattali.com/shinyjs): Easily improve the user experience of your Shiny apps in seconds by [Dean Attali](https://deanattali.com/)
+* [`bs4Dash`](https://rinterface.github.io/bs4Dash/index.html): Bootstrap 4 shinydashboard using AdminLTE3  by [David Granjob](https://twitter.com/divadnojnarg) (part of the [RinteRface](https://rinterface.com/) initiative)
+* [`shinycustomloader`](https://emitanaka.github.io/shinycustomloader/): Add a custom loader for R shiny by [Emi Tanaka](https://emitanaka.github.io/)
+* [`DT`](https://rstudio.github.io/DT): R Interface to the jQuery Plug-in DataTables by [Yihui Xie](https://yihui.name/)
+* [`golem`](https://github.com/ThinkR-open/golem/): A framework for building robust Shiny Apps by [Vincent Guyader](https://github.com/VincentGuyader) and [Colin Fay](http://colinfay.me/) (part of the [R Task Force](https://rtask.thinkr.fr/) at [ThinkR](https://thinkr.fr/))
 
 ## CoC
 
