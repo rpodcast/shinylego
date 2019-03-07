@@ -1,16 +1,16 @@
 type,size,shape,price
 plate,1 x 1,square,0.06
-plate,1 x 2,rectangle,0.07
-plate,1 x 3,rectangle,0.07
-plate,1 x 4,rectangle,0.11
-plate,1 x 6,rectangle,0.14
+plate,2 x 1,rectangle,0.07
+plate,3 x 1,rectangle,0.07
+plate,4 x 1,rectangle,0.11
+plate,6 x 1,rectangle,0.14
 plate,2 x 2,square,0.11
-plate,2 x 3,rectangle,0.14
-plate,2 x 4,rectangle,0.14
-plate,2 x 6,rectangle,0.19
+plate,3 x 2,rectangle,0.14
+plate,4 x 2,rectangle,0.14
+plate,6 x 2,rectangle,0.19
 plate,4 x 4,square,0.21
-plate,4 x 6,rectangle,0.43
-plate,4 x 8,rectangle,0.46
+plate,6 x 4,rectangle,0.43
+plate,8 x 4,rectangle,0.46
 plate,6 x 6,square,0.5
 plate,8 x 8,square,0.8
 plate,32 x 32,base,7.99
