@@ -5,10 +5,10 @@
 \alias{mod_display_image}
 \title{mod_display_imageui and mod_display_image}
 \usage{
-mod_display_imageui(id)
+mod_display_imageui(id, height_window = 600)
 
-mod_display_image(input, output, session, img_processed, width = 400,
-  height = 400)
+mod_display_image(input, output, session, img_processed, width = 600,
+  height = 600)
 }
 \arguments{
 \item{id}{shiny id}

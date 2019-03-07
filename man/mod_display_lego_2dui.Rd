@@ -5,7 +5,7 @@
 \alias{mod_display_lego_2d}
 \title{mod_display_lego_2dui and mod_display_lego_2d}
 \usage{
-mod_display_lego_2dui(id)
+mod_display_lego_2dui(id, height_window = 600)
 
 mod_display_lego_2d(input, output, session, image_lego_obj)
 }

@@ -7,10 +7,16 @@
 #' @export 
 #' @importFrom shiny NS tagList 
 #' @examples 
-mod_display_piecesui <- function(id) {
+mod_display_piecesui <- function(id, height_window = 600) {
   ns <- NS(id)
   tagList(
-    withLoader(plotOutput(ns("pieces_plot")), type = "image", loader = "www/lego_loader.gif")
+    withLoader(
+      plotOutput(
+        ns("pieces_plot"),
+        height = paste0(height_window, 'px')
+      ), 
+      type = "image", 
+      loader = "www/lego_loader.gif")
   )
 }
     

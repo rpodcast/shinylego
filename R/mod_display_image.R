@@ -7,10 +7,13 @@
 #' @export 
 #' @importFrom shiny NS tagList 
 #' @examples 
-mod_display_imageui <- function(id){
+mod_display_imageui <- function(id, height_window = 600){
   ns <- NS(id)
   tagList(
-    imageOutput(ns("image_render"))
+    imageOutput(
+      ns("image_render"),
+      height = paste0(height_window, 'px')
+    )
   )
 }
     
@@ -24,7 +27,7 @@ mod_display_imageui <- function(id){
 #' @export
 #' @rdname mod_display_imageui
     
-mod_display_image <- function(input, output, session, img_processed, width = 400, height = 400){
+mod_display_image <- function(input, output, session, img_processed, width = 600, height = 600){
   ns <- session$ns
   
   # display image
@@ -32,7 +35,8 @@ mod_display_image <- function(input, output, session, img_processed, width = 400
     list(
       src = img_processed()$image_path,
       width = width,
-      height = height
+      height = height,
+      style = "display: block; margin-left: auto; margin-right: auto;"
     )
   }, deleteFile = FALSE)
 }
