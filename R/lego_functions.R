@@ -607,8 +607,10 @@ generate_instructions <- function(image_list, num_steps=6) {
 
 #' Create printer-friendly version of required bricks
 #'
-#' @param image_list List of objects produced by [collect_bricks()]
-#'
+#' @param pieces_df Data frame with mosaic pieces information. If summarizing
+#'   the entire mosiac, use the `pieces` data frame produced by [collect_bricks()].
+#'   If using a specific step, use the data frame produced by [step_pieces()]
+#' @param step_id Optional step ID to subset
 #' @import dplyr
 #' @import tidyr
 #' @return data frame (tibble) with columns for each brick dimension and rows
@@ -623,8 +625,17 @@ generate_instructions <- function(image_list, num_steps=6) {
 #'   collect_bricks()
 #'   
 #' table_pieces(res)
-table_pieces <- function(image_list){
-  pcs <- image_list$pieces
+table_pieces <- function(pieces_df, step_id = NULL){
+  if (is.null(step_id)) {
+    pcs <- pieces_df
+  } else {
+    pcs <- pieces_df %>%
+      group_by(Brick_size, Lego_name, Lego_color) %>%
+      mutate(n = n - lag(n, default = 0)) %>%
+      ungroup %>%
+      filter(Step == !!step_id) %>%
+      select(., -Step)
+  }
   
   pcs %>% 
     select(-Lego_color) %>% 

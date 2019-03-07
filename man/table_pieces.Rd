@@ -4,10 +4,14 @@
 \alias{table_pieces}
 \title{Create printer-friendly version of required bricks}
 \usage{
-table_pieces(image_list)
+table_pieces(pieces_df, step_id = NULL)
 }
 \arguments{
-\item{image_list}{List of objects produced by \code{\link[=collect_bricks]{collect_bricks()}}}
+\item{pieces_df}{Data frame with mosaic pieces information. If summarizing
+the entire mosiac, use the \code{pieces} data frame produced by \code{\link[=collect_bricks]{collect_bricks()}}.
+If using a specific step, use the data frame produced by \code{\link[=step_pieces]{step_pieces()}}}
+
+\item{step_id}{Optional step ID to subset}
 }
 \value{
 data frame (tibble) with columns for each brick dimension and rows
