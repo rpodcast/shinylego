@@ -26,7 +26,7 @@ app_ui <- function() {
         
         # left sidebar menu
         bs4SidebarMenu(
-          bs4SidebarHeader("Header"),
+          #bs4SidebarHeader("Header"),
           bs4SidebarMenuItem(
             "Welcome",
             tabName = "welcome",
@@ -74,11 +74,22 @@ app_ui <- function() {
                   status = "info",
                   width = 12,
                   src = "www/pic_with_r_logo_github.jpg",
-                  p("Various Links:"),
-                  list_to_li(
-                    list(
-                      tags$a(href = "https://r-podcast.org", "The R-Podcast"),
-                      tags$a(href = "https://twitter.com/thercast", "Twitter: @thercast")
+                  bs4ListGroup(
+                    width = 12,
+                    bs4ListGroupItem(
+                      "The R-Podcast",
+                      type = "action",
+                      src = "https://r-podcast.org"
+                    ),
+                    bs4ListGroupItem(
+                      "Twitter: @thercast",
+                      type = "action",
+                      src = "https://twitter.com/thercast"
+                    ),
+                    bs4ListGroupItem(
+                      "Github: rpodcast",
+                      type = "action",
+                      src = "https://github.com/rpodcast"
                     )
                   )
                 )
@@ -90,12 +101,22 @@ app_ui <- function() {
                   status = "info",
                   width = 12,
                   src = "www/Ryan2018sq.jpg",
-                  p("Various Links:"),
-                  list_to_li(
-                    list(
-                      tags$a(href = "http://www.ryantimpe.com/", "ryantimpe.com/"),
-                      tags$a(href = "https://twitter.com/ryantimpe", "Twitter: @ryantimpe"),
-                      tags$a(href = "https://github.com/ryantimpe", "GitHub: ryantimpe")
+                  bs4ListGroup(
+                    width = 12,
+                    bs4ListGroupItem(
+                      "ryantimpe.com",
+                      type = "action",
+                      src = "http://www.ryantimpe.com/"
+                    ),
+                    bs4ListGroupItem(
+                      "Twitter: @ryantimpe",
+                      type = "action",
+                      src = "https://twitter.com/ryantimpe"
+                    ),
+                    bs4ListGroupItem(
+                      "GitHub: ryantimpe",
+                      type = "action",
+                      src = "https://github.com/ryantimpe"
                     )
                   )
                 )
