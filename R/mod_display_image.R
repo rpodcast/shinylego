@@ -7,7 +7,7 @@
 #' @export 
 #' @importFrom shiny NS tagList 
 #' @examples 
-mod_display_imageui <- function(id, height_window = 600){
+mod_display_imageui <- function(id, height_window = 500){
   ns <- NS(id)
   tagList(
     imageOutput(
@@ -27,7 +27,7 @@ mod_display_imageui <- function(id, height_window = 600){
 #' @export
 #' @rdname mod_display_imageui
     
-mod_display_image <- function(input, output, session, img_processed, width = 600, height = 600){
+mod_display_image <- function(input, output, session, img_processed, width = 500, height = 500){
   ns <- session$ns
   
   # display image

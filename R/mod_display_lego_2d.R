@@ -7,7 +7,7 @@
 #' @export 
 #' @importFrom shiny NS tagList 
 #' @examples 
-mod_display_lego_2dui <- function(id, height_window = 600){
+mod_display_lego_2dui <- function(id, height_window = 500){
   ns <- NS(id)
   tagList(
     withLoader(

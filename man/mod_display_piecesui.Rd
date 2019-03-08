@@ -5,7 +5,7 @@
 \alias{mod_display_pieces}
 \title{mod_display_piecesui and mod_display_pieces}
 \usage{
-mod_display_piecesui(id, height_window = 600)
+mod_display_piecesui(id, height_window = 500)
 
 mod_display_pieces(input, output, session, steps_obj, step_choice)
 }
