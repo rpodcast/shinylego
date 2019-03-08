@@ -49,7 +49,7 @@ shinylego::run_app()
 ## Deployments
 
 `shinylego` is also available on the Shinyapps.io hosting service at
-[shinyapps.io/rpodcast/shinylego](https://shinyapps.io/rpodcast/shinylego)
+[rpodcast.shinyapps.io/shinylego](https://rpodcast.shinyapps.io/shinylego)
 
 ## Acknowlegements
 
