@@ -30,7 +30,7 @@ repository](https://github.com/ryantimpe/LEGOMosaics):
 ## Installation
 
 You can install the development version of `shinylego` from
-[GitHub](https://gitlab.com) with:
+[GitHub](https://github.com) with:
 
 ``` r
 # install.packages("remotes")
@@ -49,7 +49,26 @@ shinylego::run_app()
 ## Deployments
 
 `shinylego` is also available on the Shinyapps.io hosting service at
-[rpodcast.shinyapps.io/shinylego](https://rpodcast.shinyapps.io/shinylego)
+[rpodcast.shinyapps.io/shinylego](https://rpodcast.shinyapps.io/shinylego).
+
+**Note for developer**: The deployment should not include files
+associated with [`renv`](https://rstudio.github.io/renv/), since the
+**shinyapps.io** service will handle package versions during the
+deployment process. Add the files/directories required for deployment in
+the `dev/app_manifest.txt` file, and execute deployment with the
+following:
+
+``` r
+rsconnect::deployApp(appName = "shinylego", appFileManifest = "dev/app_manifest.txt", launch.browser = FALSE)
+```
+
+## Development
+
+Contributions are welcome\! This application uses the
+[`renv`](https://rstudio.github.io/renv/) package to manage the versions
+of dependencies. After cloning the repository, launch a new session in
+the repository root directory and execute `renv::restore()` to download
+the package library.
 
 ## Acknowlegements
 

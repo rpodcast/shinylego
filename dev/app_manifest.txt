@@ -1,0 +1,12 @@
+app.R
+DESCRIPTION
+inst
+man
+NAMESPACE
+NEWS.md
+R
+README.md
+README.Rmd
+data-raw
+data
+tests

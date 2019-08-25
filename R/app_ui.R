@@ -3,7 +3,7 @@
 app_ui <- function() {
   tagList(
     golem_add_external_resources(),
-    golem::js(),
+    golem::activate_js(),
     bs4DashPage(
       title = "ShinyLEGO",
       sidebar_collapsed = FALSE,
@@ -195,6 +195,7 @@ app_ui <- function() {
             fluidRow(
               col_6(
                 bs4TabCard(
+                  id = "bricks_req",
                   title = "Bricks Required",
                   status = NULL,
                   solidHeader = FALSE,

@@ -1,6 +1,6 @@
 Package: shinylego
 Title: Shiny application for creating LEGO mosiacs
-Version: 0.0.0.9000
+Version: 0.1.0.9000
 Authors@R: c(
   person('Eric', 'Nantz', email = 'thercast@gmail.com', role = c('cre', 'aut')),
   person('Ryan', 'Timpe', role = c('ctb'))
@@ -25,7 +25,7 @@ Imports:
     shinipsum (>= 0.0.0.9000),
     magrittr,
     magick,
-    bs4Dash (>= 0.3.0),
+    bs4Dash,
     fs,
     shinyWidgets,
     shinycustomloader,
@@ -40,6 +40,5 @@ Suggests:
     rgl,
 Roxygen: list(markdown = TRUE)
 Remotes: 
-    Thinkr-open/shinipsum,
-    RinteRface/bs4Dash
+    Thinkr-open/shinipsum
 RoxygenNote: 6.1.1
