@@ -195,6 +195,7 @@ app_ui <- function() {
             fluidRow(
               col_6(
                 bs4TabCard(
+                  id = "bricks_req",
                   title = "Bricks Required",
                   status = NULL,
                   solidHeader = FALSE,
