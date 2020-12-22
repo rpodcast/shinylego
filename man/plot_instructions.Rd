@@ -12,6 +12,9 @@ plot_instructions(steps_df, mosaic_type = "flat", step_id = NULL)
 \item{step_id}{Optional index of step to print. If \code{NULL}
 (default), all steps are plotted.}
 }
+\value{
+
+}
 \description{
 Display plot with instructions at all or specific step
 }

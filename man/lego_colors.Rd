@@ -4,7 +4,8 @@
 \name{lego_colors}
 \alias{lego_colors}
 \title{LEGO colors and their R, G, and B values}
-\format{A data frame (tibble) with the following columns:
+\format{
+A data frame (tibble) with the following columns:
 \itemize{
 \item \code{LEGONo}: Unique LEGO brick ID
 \item \code{Color}: Color name
@@ -20,7 +21,8 @@
 \item \code{t_Friends}: Part of friends collection?
 \item \code{w_weight}: ???
 \item \code{w_Classic}: ???
-}}
+}
+}
 \usage{
 lego_colors
 }

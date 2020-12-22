@@ -10,3 +10,5 @@ dev_history.R
 $run_dev.*
 ^renv$
 ^renv\.lock$
+^\.devcontainer$
+^prototyping$

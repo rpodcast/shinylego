@@ -7,8 +7,14 @@
 \usage{
 mod_display_imageui(id, height_window = 500)
 
-mod_display_image(input, output, session, img_processed, width = 500,
-  height = 500)
+mod_display_image(
+  input,
+  output,
+  session,
+  img_processed,
+  width = 500,
+  height = 500
+)
 }
 \arguments{
 \item{id}{shiny id}

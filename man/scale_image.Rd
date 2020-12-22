@@ -11,7 +11,7 @@ scale_image(image, img_size, brightness = 1, warhol = 1:3)
 
 \item{img_size}{dimensions of the mosaic base plate. For a square base, supply
 a single integer. For a rectangle base, supply a vector with two integers in
-the form of \code{c(width, height}).}
+the form of \verb{c(width, height}).}
 
 \item{brightness}{Brightness adjustment threshold. For a darker mosaic, enter
 a number between 0 and 1. For a brighter mosaic, enter a number greater than 1.
