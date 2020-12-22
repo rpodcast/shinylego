@@ -4,13 +4,15 @@
 \name{price_data}
 \alias{price_data}
 \title{LEGO brick price data}
-\format{A data frame (tibble) with the following columns:
+\format{
+A data frame (tibble) with the following columns:
 \itemize{
 \item \code{type}: Type of brick
-\item \code{size}: Dimensions in format \code{a x b} measured in studs
-\item \code{shape}: Either square (\code{a x a}) or rectangle (\code{a x b})
+\item \code{size}: Dimensions in format \verb{a x b} measured in studs
+\item \code{shape}: Either square (\verb{a x a}) or rectangle (\verb{a x b})
 \item \code{price}: Price for one unit of the specific brick (in U.S. dollars)
-}}
+}
+}
 \usage{
 price_data
 }

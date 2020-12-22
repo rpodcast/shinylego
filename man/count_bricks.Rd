@@ -9,7 +9,7 @@ count_bricks(df, step_id, mosaic_type = "flat")
 \arguments{
 \item{df}{data frame produced by \code{\link[=generate_steps]{generate_steps()}}}
 
-\item{step_id}{which step to filter. Format is \code{Step 01}, etc.}
+\item{step_id}{which step to filter. Format is \verb{Step 01}, etc.}
 
 \item{mosaic_type}{String for mosaic type to produce. A \code{flat} mosaic
 places a single layer of LEGO plates on a base plate with study-side up.

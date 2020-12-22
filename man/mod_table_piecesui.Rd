@@ -7,8 +7,14 @@
 \usage{
 mod_table_piecesui(id)
 
-mod_table_pieces(input, output, session, steps_obj, step_choice,
-  width_table = "100\%")
+mod_table_pieces(
+  input,
+  output,
+  session,
+  steps_obj,
+  step_choice,
+  width_table = "100\%"
+)
 }
 \arguments{
 \item{id}{shiny id}
