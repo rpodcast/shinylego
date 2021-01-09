@@ -1,0 +1,19 @@
+---
+title: "brickr_explore"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{brickr_explore}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(brickr)
+```
