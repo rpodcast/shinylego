@@ -1,0 +1,110 @@
+---
+title: "brickr_explore"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{brickr_explore}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(magick)
+library(brickr)
+library(dplyr)
+```
+
+# Background
+
+This vignette explores how the latest updates to the [`{brickr}`](https://github.com/ryantimpe/brickr) R package can be incorporated in the backend of the application. When the app was first released, Ryan had created a set of functions that eventually became the package.  Below I compare the ways the application created the mosaic image and instruction sets in the first release to the ways `{brickr}` performs these operations.
+
+## Converting image to mosaic
+
+Let's explore converting the mascot of the KDE Plasma project Konqi to a mosaic image:
+
+![](images/kde_konqi_mascot.jpg)
+
+In either case, we first need to import the image as an R object with the `{magick}` package:
+
+```{r import-image}
+# read in jpg image as new object
+image_obj <- jpeg::readJPEG("images/kde_konqi_mascot.jpg")
+```
+
+### Previous app paradigm
+
+
+```{r previous-mosaic-gen, eval=FALSE}
+res <- scale_image(image = image_obj,
+                img_size = 48,
+                brightness = 1,
+                warhol = 1:3) %>%
+      legoize(theme = "bw", contrast = 1) %>%
+      collect_bricks(mosaic_type = "flat")
+```
+
+### `brickr` paradigm
+
+The main function for generating the mosaic data is [`image_to_mosaic()`](http://brickr.org/reference/image_to_mosaic.html) and it gives us a few additional customizations not present in the earlier functions:
+
+* `color_table`: data frame of brick colors to map onto the image. The package includes a default data frame called `lego_colors`. I will likely stick with this default set, until I can figure out how to create a customized version.
+* `color_palette`: three color palettes are available, with __universal__ being the bricks that are most available. This can be a toggle in the app with the user able to select between the three choices. It would be cool to show a simple alert when the user chooses `special` to warn them how finding brick colors in this palette may be difficult. Note that we can have more than one specified in the function call, so the input element should allow for multiple selection.
+* `method`: Color matching method powered by the `{farver}` package. The [vignette](http://brickr.org/articles/mosaics.html) on building mosaics links to a [Wikipedia article](https://en.wikipedia.org/wiki/Color_difference) for technical details, and that would be nice to link to within the app's documentation.
+* `dithering`: Adds texture to mosaic to help prevent large areas of the same color. Could be a simple toggle.
+
+
+```{r brickr-mosaic-gen}
+res <- brickr::image_to_mosaic(img = image_obj, img_size = 48, color_palette = "bw", brightness = 1)
+brickr::build_mosaic(res)
+```
+
+It should be easy to swap the new `brickr` version into the `mod_scale_image` module by adding new UI elements for the newer options and replacing the previous stepwise calls to `scale_image`, `legoize` and `collect_bricks`
+
+TODO:
+
+`build_pieces_table` should give similar information as the previous `collect_bricks` function.
+
+```{r brickr-pieces-table}
+brickr::build_pieces_table(res)
+```
+
+The column names may be slightly different than the previous version.
+
+## Creating Instructions set
+
+### Previous App Paradigm
+
+First step: use function `generate_steps` applied to the `Img_bricks` data frame that is produced by the conversion pipeline
+
+```{r old-generate-steps}
+steps_df <- generate_steps(res$Img_bricks, num_steps = 6)
+steps_df
+```
+
+Next step: Generate which bricks are used in each step with the function `step_pieces()
+
+```{r old-step-pieces}
+pcs_steps_all <- step_pieces(steps_df)
+```
+
+Next step: Find the peices used ???
+
+```{r old-table-pieces}
+pcs_steps_sub <- table_pieces(pcs_steps_all)
+```
+
+Next step: 
+
+### `brickr` paradigm
+
+The function `brickr::build_instructions()` contains an internal function for creating the steps themselves into a data frame (called `create_steps`) 
+
+```{r brickr-build-instructions}
+brickr::build_instructions(res)
+```

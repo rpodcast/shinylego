@@ -4,3 +4,4 @@
 .Ruserdata
 prototyping/*
 !prototyping/README.md
+inst/doc

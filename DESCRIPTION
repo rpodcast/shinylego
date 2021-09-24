@@ -31,14 +31,17 @@ Imports:
     shinycustomloader,
     pkgload,
     rmarkdown,
-    shinyjs
+    shinyjs,
+    brickr
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
     testthat,
     rayshader,
     rgl,
+    knitr
 Roxygen: list(markdown = TRUE)
 Remotes: 
     Thinkr-open/shinipsum
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr
