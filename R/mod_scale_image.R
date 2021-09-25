@@ -51,7 +51,7 @@ mod_scale_imageui <- function(id){
                   min = 0,
                   max = 10,
                   value = 1,
-                  step = 1
+                  step = 0.1
                 )
               ),
               col_3(
