@@ -41,6 +41,11 @@ app_ui <- function() {
             "Instructions",
             tabName = "instructions",
             icon = 'book-open'
+          ),
+          bs4SidebarMenuItem(
+            "Feedback",
+            tabName = "feedback",
+            icon = 'envelope'
           )
         )
       ),
@@ -229,6 +234,10 @@ app_ui <- function() {
                 )
               )
             )
+          ),
+          bs4TabItem(
+            tabName = "feedback",
+            mod_feedback_ui("feedback_ui_1")
           )
         )
       ),

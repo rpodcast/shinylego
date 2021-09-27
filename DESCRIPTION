@@ -32,7 +32,8 @@ Imports:
     pkgload,
     rmarkdown,
     shinyjs,
-    brickr
+    brickr,
+    gh
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
