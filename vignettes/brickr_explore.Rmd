@@ -23,9 +23,9 @@ library(readr)
 library(ggplot2)
 ```
 
-```{r lego_colors_read, include=FALSE}
+```{r lego_colors, include=FALSE}
 # perform import ----
-lego_colors <- readr::read_csv(fs::path(here::here(), "data-raw", "Lego_Colors.csv"), 
+lego_colors_old <- readr::read_csv(fs::path(here::here(), "data-raw", "Lego_Colors.csv"), 
                                col_types = cols(
                                  LEGONo = col_double(),
                                  Color = col_character(),
@@ -44,7 +44,7 @@ lego_colors <- readr::read_csv(fs::path(here::here(), "data-raw", "Lego_Colors.c
                                  w_Classic = col_double()
                                ))
 
-lego_colors <- lego_colors %>%
+lego_colors_old <- lego_colors_old %>%
   filter(c_Palette2016, !c_Transparent, !c_Glow, !c_Metallic) %>% 
   mutate(hex_code = purrr::pmap_chr(
     list(red = R, green = G, blue = B), 
@@ -55,6 +55,7 @@ lego_colors <- lego_colors %>%
   rename(R_lego = R, G_lego = G, B_lego = B)%>% 
   mutate_at(vars(starts_with("w_")), list(~ ifelse(is.na(.), 0, .)))
 
+lego_colors <- brickr::lego_colors
 ```
 
 # Background
@@ -152,5 +153,36 @@ Next step:
 The function `brickr::build_instructions()` contains an internal function for creating the steps themselves into a data frame (called `create_steps`) 
 
 ```{r brickr-build-instructions}
-brickr::build_instructions(res)
+# trying out internal functions as part of the pipeline
+in_list <- res
+image <- in_list$Img_bricks
+type <- in_list$brickr_object
+type <- in_list$brickr_object
+
+num_steps <- 10
+num_steps <- min(abs(round(num_steps)), 40)
+rows_per_step <- ceiling((max(image$ymax)-0.5) / (num_steps+1))
+
+if (type == "mosaic") {
+  create_steps <- function(a, n_steps) {
+      if(a < n_steps){
+        image %>% 
+          dplyr::group_by(brick_name) %>% 
+          dplyr::filter(min(ymin) <= a*rows_per_step+(min(image$ymin)+0.5)) %>% 
+          dplyr::ungroup() %>%
+          dplyr::mutate(Step = paste("Step", stringr::str_pad(a, 2, pad = "0")))
+      } else {
+        image %>% 
+          dplyr::mutate(Step = paste("Step", stringr::str_pad(a, 2, pad = "0")))
+      }
+    }
+}
+
+steps_for_plot <- 1:num_steps %>% 
+      purrr::map_df(create_steps, num_steps) %>% 
+      dplyr::mutate(alpha = 1)
+
+
+
+brickr::build_instructions(res, num_steps = 10)
 ```
