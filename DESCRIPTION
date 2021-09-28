@@ -33,7 +33,9 @@ Imports:
     rmarkdown,
     shinyjs,
     brickr,
-    gh
+    gh,
+    tictoc,
+    colourpicker
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
@@ -46,3 +48,5 @@ Remotes:
     Thinkr-open/shinipsum
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)

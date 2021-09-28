@@ -55,6 +55,7 @@ app_ui <- function() {
         shinyjs::useShinyjs(),
         shinyWidgets::chooseSliderSkin("HTML5"),
         bs4TabItems(
+          # welcome ui ----
           bs4TabItem(
             tabName = "welcome",
             bs4Jumbotron(
@@ -128,30 +129,29 @@ app_ui <- function() {
               )
             )
           ),
+          
+          # create image ----
           bs4TabItem(
-            tabName = "create", 
+            tabName = "create",
             fluidRow(
               col_12(
-                bs4Card(
-                  title = "Upload your image!",
-                  status = "primary",
-                  solidHeader = FALSE,
-                  collapsible = TRUE,
-                  collapsed = FALSE,
-                  closable = FALSE,
-                  labelStatus = "primary",
-                  labelText = "",
+                bs4Alert(
+                  title = "Begin your creation!",
+                  status = "success",
+                  closable = TRUE,
                   width = 12,
-                  h4("Choose an image for your LEGO mosaic! File formats supported are JPEG, JPG, and PNG."),
-                  p("Note: Conversion process may take some time for pictures with diverse color palettes."),
-                  mod_upload_graphicui("m1")
+                  "Choose an image for your LEGO mosaic! File formats supported are JPEG, JPG, and PNG."
                 )
               )
             ),
-            mod_scale_imageui("m2"),
             fluidRow(
               col_12(
                 mod_mosaic_metricsui("overall_metrics")
+              )
+            ),
+            fluidRow(
+              col_12(
+                mod_scale_imageui("m2")
               )
             ),
             fluidRow(
@@ -166,7 +166,15 @@ app_ui <- function() {
                   labelStatus = "primary",
                   labelText = "",
                   width = 12,
-                  mod_display_imageui("image")
+                  tagList(
+                    fluidRow(
+                      col_12(
+                        mod_upload_graphicui("m1"),
+                        mod_display_imageui("image")
+                      )
+                    )
+                  )
+                  
                 )
               ),
               col_6(
@@ -180,11 +188,23 @@ app_ui <- function() {
                   labelStatus = "primary",
                   labelText = "",
                   width = 12,
-                  mod_display_lego_2dui("m3")
+                  # enable_sidebar = TRUE,
+                  # sidebar_content = tagList(
+                  #   mod_scale_imageui("m1")
+                  # ),
+                  tagList(
+                    fluidRow(
+                      col_12(
+                        mod_process_image_ui("process_image_ui_1"),
+                        mod_display_lego_2dui("m3")
+                      )
+                    )
+                  )
                 )
               )
             )
           ),
+          # instructions module ----
           bs4TabItem(
             tabName = "instructions",
             fluidRow(

@@ -6,9 +6,10 @@ app_server <- function(input, output, session) {
   
   # display original image module
   callModule(mod_display_image, "image", upload_obj)
-  
+
   # scale module
-  scale_obj <- callModule(mod_scale_image, "m2", upload_obj)
+  scale_layer2 <- callModule(mod_scale_image, "m2", upload_obj)
+  scale_obj <- callModule(mod_process_image_server, "process_image_ui_1", scale_layer2)
   
   # display overall metrics
   callModule(mod_mosaic_metrics, "overall_metrics", scale_obj)

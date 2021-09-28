@@ -18,6 +18,43 @@ knitr::opts_chunk$set(
 library(magick)
 library(brickr)
 library(dplyr)
+library(tidyr)
+library(readr)
+library(ggplot2)
+```
+
+```{r lego_colors_read, include=FALSE}
+# perform import ----
+lego_colors <- readr::read_csv(fs::path(here::here(), "data-raw", "Lego_Colors.csv"), 
+                               col_types = cols(
+                                 LEGONo = col_double(),
+                                 Color = col_character(),
+                                 Sample = col_logical(),
+                                 R = col_double(),
+                                 G = col_double(),
+                                 B = col_double(),
+                                 c_Palette2016 = col_logical(),
+                                 c_Transparent = col_logical(),
+                                 c_Glow = col_logical(),
+                                 c_Metallic = col_logical(),
+                                 t_BW = col_logical(),
+                                 t_Classic = col_logical(),
+                                 t_Friends = col_logical(),
+                                 w_weight = col_double(),
+                                 w_Classic = col_double()
+                               ))
+
+lego_colors <- lego_colors %>%
+  filter(c_Palette2016, !c_Transparent, !c_Glow, !c_Metallic) %>% 
+  mutate(hex_code = purrr::pmap_chr(
+    list(red = R, green = G, blue = B), 
+    function(red, green, blue) { rgb(red, green, blue, maxColorValue = 255) }
+    )
+  ) %>%
+  mutate_at(vars(R, G, B), list(~ ./255)) %>% 
+  rename(R_lego = R, G_lego = G, B_lego = B)%>% 
+  mutate_at(vars(starts_with("w_")), list(~ ifelse(is.na(.), 0, .)))
+
 ```
 
 # Background
@@ -34,24 +71,30 @@ In either case, we first need to import the image as an R object with the `{magi
 
 ```{r import-image}
 # read in jpg image as new object
-image_obj <- jpeg::readJPEG("images/kde_konqi_mascot.jpg")
+image_obj <- jpeg::readJPEG(fs::path(here::here(), "inst", "images", "kde_konqi_mascot.jpg"))
 ```
 
 ### Previous app paradigm
 
+All backend functions for producing the LEGO images 
 
-```{r previous-mosaic-gen, eval=FALSE}
-res <- scale_image(image = image_obj,
-                img_size = 48,
-                brightness = 1,
-                warhol = 1:3) %>%
-      legoize(theme = "bw", contrast = 1) %>%
-      collect_bricks(mosaic_type = "flat")
+The `scale_image` function is stored in the `R/lego_functions.R` script
+
+```{r previous-mosaic-gen}
+source(fs::path(here::here(), "R", "lego_functions.R"))
+res_prev <- scale_image(image = image_obj,
+                        img_size = 48,
+                        brightness = 1,
+                        warhol = 1:3) %>%
+              legoize(theme = "bw", contrast = 1) %>%
+              collect_bricks(mosaic_type = "flat")
+
+display_set(res_prev)
 ```
 
 ### `brickr` paradigm
 
-The main function for generating the mosaic data is [`image_to_mosaic()`](http://brickr.org/reference/image_to_mosaic.html) and it gives us a few additional customizations not present in the earlier functions:
+The main function for generating the mosaic data is [`image_to_mosaic()`](http://brickr.org/reference/image_to_mosaic.html) and it gives us additional customization not present in the earlier functions:
 
 * `color_table`: data frame of brick colors to map onto the image. The package includes a default data frame called `lego_colors`. I will likely stick with this default set, until I can figure out how to create a customized version.
 * `color_palette`: three color palettes are available, with __universal__ being the bricks that are most available. This can be a toggle in the app with the user able to select between the three choices. It would be cool to show a simple alert when the user chooses `special` to warn them how finding brick colors in this palette may be difficult. Note that we can have more than one specified in the function call, so the input element should allow for multiple selection.
@@ -60,7 +103,10 @@ The main function for generating the mosaic data is [`image_to_mosaic()`](http:/
 
 
 ```{r brickr-mosaic-gen}
-res <- brickr::image_to_mosaic(img = image_obj, img_size = 48, color_palette = "bw", brightness = 1)
+res <- brickr::image_to_mosaic(img = image_obj, 
+                               img_size = 48, 
+                               color_palette = "bw", 
+                               brightness = 1)
 brickr::build_mosaic(res)
 ```
 
