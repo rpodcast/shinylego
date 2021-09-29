@@ -56,16 +56,16 @@ golem::add_dockerfile_heroku()
 library(gert)
 current_branch <- git_branch()
 
-if (current_branch == "main") {
+if (current_branch == "master") {
     rsconnect::deployApp(
-        appName = "shinycal", 
+        appName = golem::get_golem_name(), 
         appFileManifest = "dev/app_manifest.txt", 
         launch.browser = FALSE, 
         forceUpdate = TRUE
     )
 } else if (current_branch == "dev") {
     rsconnect::deployApp(
-        appName = "shinycal_dev", 
+        appName = paste0(golem::get_golem_name(), "_dev"), 
         appFileManifest = "dev/app_manifest.txt", 
         launch.browser = FALSE, 
         forceUpdate = TRUE
