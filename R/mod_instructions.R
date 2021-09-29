@@ -19,8 +19,7 @@ mod_instructionsui <- function(id){
           collapsible = TRUE,
           collapsed = FALSE,
           closable = FALSE,
-          labelStatus = "primary",
-          labelText = "",
+          label = NULL,
           width = 12,
           fluidRow(
             col_6(
@@ -51,20 +50,19 @@ mod_instructionsui <- function(id){
     fluidRow(
       col_6(
         bs4TabCard(
-          id = "bricks_req",
+          id = ns("bricks_req"),
           title = "Bricks Required",
           status = NULL,
           solidHeader = FALSE,
           width = 12,
           side = "right",
-          bs4TabPanel(
-            tabName = "Diagram",
-            active = TRUE,
+          selected = "Diagram",
+          tabPanel(
+            title = "Diagram",
             mod_display_piecesui(ns("inst_pieces"))
           ),
-          bs4TabPanel(
-            tabName = "Table",
-            active = FALSE,
+          tabPanel(
+            title = "Table",
             mod_table_piecesui(ns("inst_table"))
           )
         )
@@ -77,8 +75,7 @@ mod_instructionsui <- function(id){
           collapsible = TRUE,
           collapsed = FALSE,
           closable = FALSE,
-          labelStatus = "primary",
-          labelText = "",
+          label = NULL,
           width = 12,
           #"no way"
           mod_display_instructionsui(ns("inst_display"))

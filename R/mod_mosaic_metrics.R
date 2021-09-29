@@ -42,8 +42,8 @@ mod_mosaic_metrics <- function(input, output, session, scale_obj){
     bs4ValueBox(
       value = total_bricks,
       subtitle = "Total bricks required",
-      status = "info",
-      icon = 'toolbox'
+      color = "info",
+      icon = icon('toolbox')
     )
   })
   
@@ -58,8 +58,8 @@ mod_mosaic_metrics <- function(input, output, session, scale_obj){
     bs4ValueBox(
       value = unique_bricks,
       subtitle = "Unique brick sizes",
-      status = "danger",
-      icon = 'shopping-cart'
+      color = "danger",
+      icon = icon('shopping-cart')
     )
   })
   
@@ -74,8 +74,8 @@ mod_mosaic_metrics <- function(input, output, session, scale_obj){
     bs4ValueBox(
       value = unique_colors,
       subtitle = "Unique colors",
-      status = "primary",
-      icon = 'palette'
+      color = "primary",
+      icon = icon('palette')
     )
   })
   
@@ -101,8 +101,8 @@ mod_mosaic_metrics <- function(input, output, session, scale_obj){
     bs4ValueBox(
       value = total_cost,
       subtitle = "Estimated Cost (dollars)",
-      status = "warning",
-      icon = 'file-invoice-dollar'
+      color = "warning",
+      icon = icon('file-invoice-dollar')
     )
   })
 }

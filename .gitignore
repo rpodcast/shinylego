@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+.Renviron
 prototyping/*
 !prototyping/README.md
 inst/doc
