@@ -207,53 +207,54 @@ app_ui <- function() {
           # instructions module ----
           bs4TabItem(
             tabName = "instructions",
-            fluidRow(
-              col_12(
-                mod_define_stepsui("inst_steps")
-              )
-            ),
-            fluidRow(
-              col_12(
-                mod_choose_stepui("choice_steps")
-              )
-            ),
-            fluidRow(
-              col_6(
-                bs4TabCard(
-                  id = "bricks_req",
-                  title = "Bricks Required",
-                  status = NULL,
-                  solidHeader = FALSE,
-                  width = 12,
-                  side = "right",
-                  bs4TabPanel(
-                    tabName = "Diagram",
-                    active = TRUE,
-                    mod_display_piecesui("inst_pieces")
-                  ),
-                  bs4TabPanel(
-                    tabName = "Table",
-                    active = FALSE,
-                    mod_table_piecesui("inst_table")
-                  )
-                )
-              ),
-              col_6(
-                bs4Card(
-                  title = "Instructions",
-                  status = "primary",
-                  solidHeader = FALSE,
-                  collapsible = TRUE,
-                  collapsed = FALSE,
-                  closable = FALSE,
-                  labelStatus = "primary",
-                  labelText = "",
-                  width = 12,
-                  #"no way"
-                  mod_display_instructionsui("inst_display")
-                )
-              )
-            )
+            mod_instructionsui("mod_instructions_ui_1")
+            # fluidRow(
+            #   col_12(
+            #     mod_define_stepsui("inst_steps")
+            #   )
+            # ),
+            # fluidRow(
+            #   col_12(
+            #     mod_choose_stepui("choice_steps")
+            #   )
+            # ),
+            # fluidRow(
+            #   col_6(
+            #     bs4TabCard(
+            #       id = "bricks_req",
+            #       title = "Bricks Required",
+            #       status = NULL,
+            #       solidHeader = FALSE,
+            #       width = 12,
+            #       side = "right",
+            #       bs4TabPanel(
+            #         tabName = "Diagram",
+            #         active = TRUE,
+            #         mod_display_piecesui("inst_pieces")
+            #       ),
+            #       bs4TabPanel(
+            #         tabName = "Table",
+            #         active = FALSE,
+            #         mod_table_piecesui("inst_table")
+            #       )
+            #     )
+            #   ),
+            #   col_6(
+            #     bs4Card(
+            #       title = "Instructions",
+            #       status = "primary",
+            #       solidHeader = FALSE,
+            #       collapsible = TRUE,
+            #       collapsed = FALSE,
+            #       closable = FALSE,
+            #       labelStatus = "primary",
+            #       labelText = "",
+            #       width = 12,
+            #       #"no way"
+            #       mod_display_instructionsui("inst_display")
+            #     )
+            #   )
+            # )
           ),
           bs4TabItem(
             tabName = "feedback",

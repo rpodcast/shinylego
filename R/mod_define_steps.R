@@ -66,6 +66,7 @@ mod_define_steps <- function(input, output, session){
     return(
       list(
         n_steps = n_steps,
+        steps_int = 1:n_steps,
         step_ids = step_ids
       )
     )

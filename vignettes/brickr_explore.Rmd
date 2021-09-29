@@ -113,16 +113,6 @@ brickr::build_mosaic(res)
 
 It should be easy to swap the new `brickr` version into the `mod_scale_image` module by adding new UI elements for the newer options and replacing the previous stepwise calls to `scale_image`, `legoize` and `collect_bricks`
 
-TODO:
-
-`build_pieces_table` should give similar information as the previous `collect_bricks` function.
-
-```{r brickr-pieces-table}
-brickr::build_pieces_table(res)
-```
-
-The column names may be slightly different than the previous version.
-
 ## Creating Instructions set
 
 ### Previous App Paradigm
@@ -182,7 +172,71 @@ steps_for_plot <- 1:num_steps %>%
       purrr::map_df(create_steps, num_steps) %>% 
       dplyr::mutate(alpha = 1)
 
+steps_for_plot
 
 
-brickr::build_instructions(res, num_steps = 10)
+#brickr::build_instructions(res, num_steps = 10)
 ```
+
+
+TODO:
+
+`build_pieces_table` should give similar information as the previous `collect_bricks` function.
+
+```{r brickr-pieces-table}
+brickr::build_pieces_table(res)
+```
+
+```{r}
+brickr::build_pieces(res)
+```
+
+
+
+The column names may be slightly different than the previous version.
+
+```{r brick-pieces-all}
+pcs_total <- res$pieces
+pcs_total
+```
+
+```{r brick-pieces-steps}
+pcs_step_df <- steps_for_plot %>%
+  mutate(Brick_size = paste(brick_width, "x", brick_height)) %>%
+  select(Step, Brick_size, Lego_color, Lego_name, Piece = piece_type) %>%
+  group_by(Step, Brick_size, Lego_name, Lego_color, Piece) %>%
+  summarize(n_cumulative = n()) %>%
+  ungroup() %>%
+  group_by(Brick_size, Lego_color, Lego_name) %>%
+  mutate(n_step = n_cumulative - lag(n_cumulative)) %>%
+  ungroup() %>%
+  mutate(n_step = ifelse(is.na(n_step), n_cumulative, n_step))
+
+pcs_step_df
+
+pcs_step_df %>% 
+  dplyr::select(-Lego_color, -n_cumulative) %>% 
+  tidyr::pivot_wider(names_from = Brick_size, values_from = n_step, values_fill = 0) %>%
+  #tidyr::spread(Brick_size, n_step, fill = 0) %>% 
+  dplyr::rename(`LEGO Brick Color` = Lego_name)
+```
+
+```{r}
+source(fs::path(here::here(), "R", "fct_brickr_custom.R"))
+pcs_new <- build_pieces_steps_table(res, num_steps = 10, table_format = "long")
+pcs_new
+
+build_pieces_steps(pcs_new, step = "Step 08")
+```
+
+```{r}
+source(fs::path(here::here(), "R", "fct_brickr_custom.R"))
+pcs_new <- build_pieces_steps_table(res, num_steps = 10, table_format = "wide")
+pcs_new
+```
+
+```{r}
+source(fs::path(here::here(), "R", "fct_brickr_custom.R"))
+build_instructions_steps(res, num_steps = 10, step = "Step 01")
+```
+

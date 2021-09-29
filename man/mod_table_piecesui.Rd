@@ -11,7 +11,8 @@ mod_table_pieces(
   input,
   output,
   session,
-  steps_obj,
+  scale_obj,
+  steps_range,
   step_choice,
   width_table = "100\%"
 )

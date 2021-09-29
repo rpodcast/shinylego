@@ -7,7 +7,7 @@
 \usage{
 mod_instructionsui(id)
 
-mod_instructions(input, output, session)
+mod_instructions(input, output, session, scale_obj)
 }
 \arguments{
 \item{id}{shiny id}

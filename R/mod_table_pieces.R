@@ -31,37 +31,42 @@ mod_table_piecesui <- function(id){
 #' @export
 #' @rdname mod_table_piecesui
     
-mod_table_pieces <- function(input, output, session, steps_obj, step_choice, width_table = '100%'){
+mod_table_pieces <- function(input, output, session, scale_obj, steps_range, step_choice, width_table = '100%'){
   ns <- session$ns
   
   table_obj <- reactive({
-    pcs_steps_all <- step_pieces(steps_obj())
+    req(scale_obj())
+    req(steps_range())
+    req(step_choice())
     
-    step_choice_sub <- step_choice()
-    res <- table_pieces(pcs_steps_all, step_choice_sub)
+    pcs_new <- build_pieces_steps_table(
+      scale_obj(), 
+      num_steps = steps_range()$n_steps, 
+      table_format = "wide"
+    ) %>%
+      filter(Step == step_choice()) %>%
+      select(-Piece, -Step)
     
-    # remove any rows with all 0 values
-    res <- filter_at(res, vars(contains('x')), any_vars(. > 0))
-    
-    # add a blank column to hold the color styling
-    res <- res %>%
-      mutate(Display = "    ") %>%
-      select(`LEGO Brick Color`, Display, everything())
+    res <- pcs_new %>%
+      #mutate(Display = "    ") %>%
+      select(`LEGO Brick Color`, Display = Lego_color, everything())
     
     return(res)
   })
   
   output$pieces_table <- DT::renderDT({
+    req(table_obj())
+    n_cols <- ncol(table_obj())
     DT::datatable(table_obj(), 
                   options = list(
                     dom = 't', 
-                    pageLenth = 30,
-                    columnDefs = list(list(className = 'dt-center', targets = 0:7))),
+                    pageLength = 30),
+                    #columnDefs = list(list(className = 'dt-center', targets = 0:n_cols))),
                   rownames = FALSE) %>%
       DT::formatStyle(
         'Display',
         'LEGO Brick Color',
-        backgroundColor = DT::styleEqual(lego_colors$Color, lego_colors$hex_code)
+        backgroundColor = DT::styleEqual(lego_colors$Color, lego_colors$hex)
       )
     }
   )

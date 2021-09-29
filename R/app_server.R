@@ -17,24 +17,27 @@ app_server <- function(input, output, session) {
   # display 2d lego (all pieces)
   callModule(mod_display_lego_2d, "m3", scale_obj)
   
-  # number of steps in instructions tab
-  steps_inst_obj <- callModule(mod_define_steps, "inst_steps")
+  # instructions module
+  callModule(mod_instructions, "mod_instructions_ui_1", scale_obj)
   
-  # reactive for tidy steps data frame
-  lego_steps <- reactive({
-    generate_steps(scale_obj()$Img_bricks, num_steps = steps_inst_obj()$n_steps)
-  })
+  # number of steps in instructions tab
+  #steps_inst_obj <- callModule(mod_define_steps, "inst_steps")
+  
+  # # reactive for tidy steps data frame
+  # lego_steps <- reactive({
+  #   generate_steps(scale_obj(), num_steps = steps_inst_obj()$n_steps)
+  # })
   
   # step choices
-  step_choice <- callModule(mod_choose_step, "choice_steps", lego_steps, steps_inst_obj)
+  #step_choice <- callModule(mod_choose_step, "choice_steps", lego_steps, steps_inst_obj)
   
   # display pieces required at selected step
-  callModule(mod_display_pieces, "inst_pieces", lego_steps, step_choice)
+  #callModule(mod_display_pieces, "inst_pieces", scale_obj, steps_inst_obj, step_choice)
   
   # display table version of pieces at selected step
-  callModule(mod_table_pieces, "inst_table", lego_steps, step_choice)
+  #callModule(mod_table_pieces, "inst_table", scale_obj, steps_inst_obj, step_choice)
   
   # display instructions  at selected step
-  callModule(mod_display_instructions, "inst_display", lego_steps, step_choice)
+  #callModule(mod_display_instructions, "inst_display", scale_obj, steps_inst_obj, step_choice)
 }
 

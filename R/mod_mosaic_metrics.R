@@ -6,6 +6,7 @@
 #'
 #' @export 
 #' @importFrom shiny NS tagList 
+#' @import dplyr
 #' @examples 
 mod_mosaic_metricsui <- function(id){
   ns <- NS(id)
