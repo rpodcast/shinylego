@@ -107,6 +107,13 @@
       "Repository": "RSPM",
       "Hash": "6a69b1a37046a67a793acb3b5263bffe"
     },
+    "brio": {
+      "Package": "brio",
+      "Version": "1.1.2",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "2f01e16ff9571fe70381c7b9ae560dc4"
+    },
     "bs4Dash": {
       "Package": "bs4Dash",
       "Version": "2.0.3",
@@ -130,17 +137,17 @@
     },
     "callr": {
       "Package": "callr",
-      "Version": "3.5.0",
+      "Version": "3.7.0",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "dea3322c701bbb5dd31c353a72a1ebf9"
+      "Hash": "461aa75a11ce2400245190ef5d3995df"
     },
     "cli": {
       "Package": "cli",
-      "Version": "2.1.0",
+      "Version": "3.0.1",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "0b316487b21d21f99ebf98abe179b1ea"
+      "Hash": "e3ae5d68dea0c55a12ea12a9fda02e61"
     },
     "clipr": {
       "Package": "clipr",
@@ -225,6 +232,13 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "6c8fe8fa26a23b79949375d372c7b395"
+    },
+    "diffobj": {
+      "Package": "diffobj",
+      "Version": "0.3.4",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "feb5b7455eba422a2c110bb89852e6a3"
     },
     "digest": {
       "Package": "digest",
@@ -620,10 +634,10 @@
     },
     "processx": {
       "Package": "processx",
-      "Version": "3.4.4",
+      "Version": "3.5.2",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "03446ed0b8129916f73676726cb3c48f"
+      "Hash": "0cbca2bc4d16525d009c4dbba156b37c"
     },
     "promises": {
       "Package": "promises",
@@ -809,10 +823,10 @@
     },
     "testthat": {
       "Package": "testthat",
-      "Version": "2.3.2",
+      "Version": "3.0.4",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "0829b987b8961fb07f3b1b64a2fbc495"
+      "Hash": "575216c9946ca70016c3ffb9c31709ba"
     },
     "tibble": {
       "Package": "tibble",
@@ -876,6 +890,13 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "30b15e2b6a0abc1e67bb468d9d851071"
+    },
+    "waldo": {
+      "Package": "waldo",
+      "Version": "0.3.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "ad8cfff5694ac5b3c354f8f2044bd976"
     },
     "webshot": {
       "Package": "webshot",
