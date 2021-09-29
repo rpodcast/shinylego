@@ -6,7 +6,7 @@
 #'
 #' @export 
 #' @importFrom shiny NS tagList 
-#' @examples 
+#'  
 mod_instructionsui <- function(id){
   ns <- NS(id)
   tagList(

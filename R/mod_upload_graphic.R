@@ -7,7 +7,7 @@
 #'
 #' @export 
 #' @importFrom shiny NS tagList fileInput
-#' @examples 
+#'  
 mod_upload_graphicui <- function(id, label_text = NULL){
   ns <- NS(id)
   tagList(

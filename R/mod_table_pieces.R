@@ -7,7 +7,7 @@
 #' @export 
 #' @importFrom shiny NS tagList 
 #' @import DT
-#' @examples 
+#'  
 mod_table_piecesui <- function(id){
   ns <- NS(id)
   tagList(

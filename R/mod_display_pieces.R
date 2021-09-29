@@ -6,7 +6,7 @@
 #'
 #' @export 
 #' @importFrom shiny NS tagList 
-#' @examples 
+#'  
 mod_display_piecesui <- function(id, height_window = 500) {
   ns <- NS(id)
   tagList(

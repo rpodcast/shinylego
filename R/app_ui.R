@@ -1,5 +1,6 @@
 #' @import shiny
 #' @import bs4Dash
+#' @import tippy
 app_ui <- function() {
   tagList(
     golem_add_external_resources(),
@@ -171,6 +172,7 @@ golem_add_external_resources <- function(){
   tagList(
     # Add here all the external resources
     # If you have a custom.css in the inst/app/www
+    tippy::useTippy(),
     tags$link(rel="stylesheet", type="text/css", href="www/css/legobricks.css"),
     tags$link(rel="stylesheet", type="text/css", href="www/css/legothick.css")
     #tags$style(HTML("body {font-family: 'LEGO BRIX', sans-serif;}" ))
