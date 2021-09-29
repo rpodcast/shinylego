@@ -57,6 +57,7 @@ mod_instructionsui <- function(id){
           width = 12,
           side = "right",
           selected = "Diagram",
+          maximizable = TRUE,
           tabPanel(
             title = "Diagram",
             mod_display_piecesui(ns("inst_pieces"))
@@ -75,9 +76,9 @@ mod_instructionsui <- function(id){
           collapsible = TRUE,
           collapsed = FALSE,
           closable = FALSE,
+          maximizable = TRUE,
           label = NULL,
           width = 12,
-          #"no way"
           mod_display_instructionsui(ns("inst_display"))
         )
       )

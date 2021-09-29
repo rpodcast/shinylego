@@ -142,6 +142,18 @@
       "Repository": "RSPM",
       "Hash": "461aa75a11ce2400245190ef5d3995df"
     },
+    "cicerone": {
+      "Package": "cicerone",
+      "Version": "1.0.5.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "JohnCoene",
+      "RemoteRepo": "cicerone",
+      "RemoteRef": "master",
+      "RemoteSha": "4791dd6f411e2aec765f8e38522e7c4b9085fe16",
+      "Hash": "951a297cd0053d385d2c0e8f59b317c9"
+    },
     "cli": {
       "Package": "cli",
       "Version": "3.0.1",
@@ -578,10 +590,10 @@
     },
     "packrat": {
       "Package": "packrat",
-      "Version": "0.5.0",
+      "Version": "0.7.0",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "2ebd34a38f4248281096cc723535b66d"
+      "Hash": "95e8c3825efcaad09411799da92c0af9"
     },
     "pillar": {
       "Package": "pillar",
@@ -732,10 +744,10 @@
     },
     "rsconnect": {
       "Package": "rsconnect",
-      "Version": "0.8.16",
+      "Version": "0.8.24",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "3924a1c20ce2479e89a08b0ca4c936c6"
+      "Hash": "5e21fd77eb844fa1ff1d23cb04e1d753"
     },
     "rstudioapi": {
       "Package": "rstudioapi",
@@ -855,6 +867,18 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "6e0ad90ac5669e35d5456cb61b295acb"
+    },
+    "tippy": {
+      "Package": "tippy",
+      "Version": "1.0.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "JohnCoene",
+      "RemoteRepo": "tippy",
+      "RemoteRef": "master",
+      "RemoteSha": "12667960d413bc857f41b893c91b79fb0bbfb32f",
+      "Hash": "e0276c5f1dff5eeeadc698c932efa24f"
     },
     "usethis": {
       "Package": "usethis",

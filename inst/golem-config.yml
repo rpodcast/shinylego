@@ -1,6 +1,6 @@
 default:
   golem_name: shinylego
-  golem_version: 0.1.0.9000
+  golem_version: !expr desc::desc_get_version()
   app_prod: no
   feedback_repo: "rpodcast/shinylego_testing"
 production:

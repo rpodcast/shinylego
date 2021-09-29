@@ -1,6 +1,6 @@
 Package: shinylego
 Title: Shiny application for creating LEGO mosiacs
-Version: 0.1.0.9000
+Version: 1.0
 Authors@R: c(
   person('Eric', 'Nantz', email = 'thercast@gmail.com', role = c('cre', 'aut')),
   person('Ryan', 'Timpe', role = c('ctb'))
@@ -35,7 +35,9 @@ Imports:
     brickr,
     gh,
     colourpicker,
-    tippy (>= 1.0.0)
+    tippy (>= 1.0.0),
+    cicerone (>= 1.0.5.9000),
+    desc
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues
 Suggests: 
@@ -44,9 +46,10 @@ Suggests:
     rgl,
     knitr
 Roxygen: list(markdown = TRUE)
-Remotes:  
+Remotes: 
     Thinkr-open/shinipsum,
-    JohnCoene/tippy
+    JohnCoene/tippy,
+    JohnCoene/cicerone
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Depends: 

@@ -9,6 +9,7 @@
 #' @import shinyWidgets
 #' @import shinycustomloader
 #' @importFrom brickr image_to_mosaic build_mosaic
+#' @import tippy
 #'  
 mod_scale_imageui <- function(id){
   ns <- NS(id)

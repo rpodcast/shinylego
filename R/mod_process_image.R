@@ -17,7 +17,8 @@ mod_process_image_ui <- function(id){
       style = "jelly",
       color = "success",
       size = "md"
-    )
+    ),
+    div(id = ns("alert_anchor"))
   )
 }
     
@@ -30,8 +31,18 @@ mod_process_image_server <- function(input, output, session, image_layer2){
   # establish reactive values
   image_lego <- reactiveVal(NULL)
   
-  # reactive for third layer (collect_bricks)
+  # assemble bricks
   observeEvent(input$apply_settings, {
+    message("alert popped up")
+    bs4Dash::createAlert(
+      id = "alert_anchor",
+      options = list(
+        status = "info",
+        closable = TRUE,
+        width = 12,
+        content = "Assembling bricks for mosaic. Please stand by..."
+      )
+    )
     req(image_layer2())
     #tictoc::tic("collect_bricks processing")
     res <- brickr:::collect_bricks(
@@ -39,8 +50,23 @@ mod_process_image_server <- function(input, output, session, image_layer2){
       use_bricks = NULL,
       default_piece_type = "b"
     )
+    bs4Dash::closeAlert(id = "alert_anchor")
     #tictoc::toc()
     image_lego(res)
+  })
+  
+  observeEvent(input$alert_anchor, {
+    if (!input$alert_anchor) {
+      bs4Dash::toast(
+        title = "LEGO mosaic is ready!",
+        options = list(
+          class = "bg-lime",
+          autohide = TRUE,
+          delay = 2000,
+          position = "topRight"
+        )
+      )
+    }
   })
   
   image_lego

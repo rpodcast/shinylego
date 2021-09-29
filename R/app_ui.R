@@ -1,6 +1,5 @@
 #' @import shiny
 #' @import bs4Dash
-#' @import tippy
 app_ui <- function() {
   tagList(
     golem_add_external_resources(),
@@ -79,7 +78,7 @@ app_ui <- function() {
                   label = NULL,
                   width = 12,
                   tagList(
-                    p("Choose an image for your LEGO mosaic! File formats supported are JPEG, JPG, and PNG.")
+                    p("Choose an image for your LEGO mosaic! File formats supported are JPEG, JPG, and PNG. Click the Create Guide button in the toolbar to view more detailed information.")
                   )
                 )
               )
@@ -173,6 +172,7 @@ golem_add_external_resources <- function(){
     # Add here all the external resources
     # If you have a custom.css in the inst/app/www
     tippy::useTippy(),
+    cicerone::use_cicerone(),
     tags$link(rel="stylesheet", type="text/css", href="www/css/legobricks.css"),
     tags$link(rel="stylesheet", type="text/css", href="www/css/legothick.css")
     #tags$style(HTML("body {font-family: 'LEGO BRIX', sans-serif;}" ))
