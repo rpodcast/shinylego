@@ -11,7 +11,7 @@ mod_welcome_ui <- function(id){
   ns <- NS(id)
   tagList(
     bs4Jumbotron(
-      title = "Welcome to the LEGO Mosaic Maker!",
+      title = "Welcome to the Shiny LEGO Mosaic Maker!",
       lead = "This is a Shiny application that lets you convert any picture to a LEGO mosaic directly from the comfort of your web browser!  Once you upload a picture, you can customize many settings.  This app would not be possible without the brickr package created by Ryan Timpe!",
       status = "info",
       btnName = "App GitHub Repository",
