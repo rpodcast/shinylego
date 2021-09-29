@@ -27,9 +27,9 @@ if (Sys.getenv("TERM_PROGRAM") == "vscode") {
     }
 
     # use the new httpgd plotting device
-    options(vsc.plot = FALSE)
-    options(device = function(...) {
-      httpgd:::hgd()
-      .vsc.browser(httpgd::hgd_url(), viewer = "Beside")
-    })
+    # options(vsc.plot = FALSE)
+    # options(device = function(...) {
+    #   httpgd:::hgd()
+    #   .vsc.browser(httpgd::hgd_url(), viewer = "Beside")
+    # })
 }

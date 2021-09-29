@@ -6,7 +6,7 @@
 #'
 #' @export 
 #' @importFrom shiny NS tagList 
-#' @examples 
+#'  
 mod_display_instructionsui <- function(id, height_window = 500){
   ns <- NS(id)
   tagList(
@@ -30,13 +30,20 @@ mod_display_instructionsui <- function(id, height_window = 500){
 #' @export
 #' @rdname mod_display_instructionsui
     
-mod_display_instructions <- function(input, output, session, steps_obj, step_choice){
+mod_display_instructions <- function(input, output, session, scale_obj, steps_range, step_choice){
   ns <- session$ns
   
   # reactive for plot object
   image_obj <- reactive({
-    step_choice_sub <- step_choice()
-    plot_instructions(steps_obj(), step_id = step_choice_sub)
+    req(scale_obj())
+    req(steps_range())
+    req(step_choice())
+    
+    build_instructions_steps(
+      scale_obj(), 
+      steps_range()$n_steps, 
+      step = step_choice()
+    )
   })
   
   # display plot

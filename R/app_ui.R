@@ -6,10 +6,11 @@ app_ui <- function() {
     golem::activate_js(),
     bs4DashPage(
       title = "ShinyLEGO",
-      sidebar_collapsed = FALSE,
+      #sidebar_collapsed = FALSE,
       
       # navigation bar
-      navbar = bs4DashNavbar(
+      header = bs4DashNavbar(
+        mod_help_button_ui("help_button_ui_1"),
         skin = "dark",
         status = "primary"
       ),
@@ -19,28 +20,34 @@ app_ui <- function() {
         skin = "dark",
         status = "primary",
         title = "ShinyLEGO",
-        brandColor = "primary",
-        src = "LegoBackground.png",
+        #brandColor = "primary",
+        #src = "LegoBackground.png",
         elevation = 3,
-        opacity = 0.8,
+        #opacity = 0.8,
         
         # left sidebar menu
         bs4SidebarMenu(
-          #bs4SidebarHeader("Header"),
+          id = "current_tab",
           bs4SidebarMenuItem(
             "Welcome",
             tabName = "welcome",
-            icon = 'info'
+            icon = icon('info')
           ),
           bs4SidebarMenuItem(
             "Create",
             tabName = "create",
-            icon = 'palette'
+            icon = icon('palette')
           ),
           bs4SidebarMenuItem(
             "Instructions",
             tabName = "instructions",
-            icon = 'book-open'
+            icon = icon('book-open'),
+            condition = "output.showinst"
+          ),
+          bs4SidebarMenuItem(
+            "Feedback",
+            tabName = "feedback",
+            icon = icon('envelope')
           )
         )
       ),
@@ -50,103 +57,40 @@ app_ui <- function() {
         shinyjs::useShinyjs(),
         shinyWidgets::chooseSliderSkin("HTML5"),
         bs4TabItems(
+          # welcome ui ----
           bs4TabItem(
             tabName = "welcome",
-            bs4Jumbotron(
-              title = "Welcome to the LEGO Mosaic Maker!",
-              lead = "This is a Shiny application that lets you convert any picture to a LEGO mosaic directly from the comfort of your web browser!  Once you upload a picture, you can customize many settings.  This app would not be possible without the innovative R scripts created by Ryan Timpe!  Here are links to his excellent blog posts detailing the workflow:",
-              list_to_li(
-                list(
-                  tags$a(href = "http://www.ryantimpe.com/post/lego-mosaic1/", "How To: LEGO mosaics from photos using R & the tidyverse"),
-                  tags$a(href = "http://www.ryantimpe.com/post/lego-mosaic2/", "LEGO mosaics: Two weeks later"),
-                  tags$a(href = "http://www.ryantimpe.com/post/lego-mosaic3/", "LEGO mosaics: Part 3(D)")
-                )
-              ),
-              status = "primary",
-              btn_name = "App GitHub Repository",
-              href = "https://gitlab.com/rpodcast/shinylego"
-            ),
-            fluidRow(
-              col_6(
-                bs4UserCard(
-                  title = "Application Developer",
-                  subtitle = "Eric Nantz",
-                  status = "info",
-                  width = 12,
-                  src = "www/pic_with_r_logo_github.jpg",
-                  bs4ListGroup(
-                    width = 12,
-                    bs4ListGroupItem(
-                      "The R-Podcast",
-                      type = "action",
-                      src = "https://r-podcast.org"
-                    ),
-                    bs4ListGroupItem(
-                      "Twitter: @thercast",
-                      type = "action",
-                      src = "https://twitter.com/thercast"
-                    ),
-                    bs4ListGroupItem(
-                      "Github: rpodcast",
-                      type = "action",
-                      src = "https://github.com/rpodcast"
-                    )
-                  )
-                )
-              ),
-              col_6(
-                bs4UserCard(
-                  title = "Key Contributor",
-                  subtitle = "Ryan Timpe",
-                  status = "info",
-                  width = 12,
-                  src = "www/Ryan2018sq.jpg",
-                  bs4ListGroup(
-                    width = 12,
-                    bs4ListGroupItem(
-                      "ryantimpe.com",
-                      type = "action",
-                      src = "http://www.ryantimpe.com/"
-                    ),
-                    bs4ListGroupItem(
-                      "Twitter: @ryantimpe",
-                      type = "action",
-                      src = "https://twitter.com/ryantimpe"
-                    ),
-                    bs4ListGroupItem(
-                      "GitHub: ryantimpe",
-                      type = "action",
-                      src = "https://github.com/ryantimpe"
-                    )
-                  )
-                )
-              )
-            )
+            mod_welcome_ui("welcome_ui_1")
           ),
+          
+          # create image ----
           bs4TabItem(
-            tabName = "create", 
+            tabName = "create",
             fluidRow(
               col_12(
                 bs4Card(
-                  title = "Upload your image!",
+                  title = "Begin your creation!",
                   status = "primary",
                   solidHeader = FALSE,
                   collapsible = TRUE,
                   collapsed = FALSE,
-                  closable = FALSE,
-                  labelStatus = "primary",
-                  labelText = "",
+                  closable = TRUE,
+                  label = NULL,
                   width = 12,
-                  h4("Choose an image for your LEGO mosaic! File formats supported are JPEG, JPG, and PNG."),
-                  p("Note: Conversion process may take some time for pictures with diverse color palettes."),
-                  mod_upload_graphicui("m1")
+                  tagList(
+                    p("Choose an image for your LEGO mosaic! File formats supported are JPEG, JPG, and PNG. Click the Create Guide button in the toolbar to view more detailed information.")
+                  )
                 )
               )
             ),
-            mod_scale_imageui("m2"),
             fluidRow(
               col_12(
                 mod_mosaic_metricsui("overall_metrics")
+              )
+            ),
+            fluidRow(
+              col_12(
+                mod_scale_imageui("m2")
               )
             ),
             fluidRow(
@@ -158,10 +102,17 @@ app_ui <- function() {
                   collapsible = TRUE,
                   collapsed = FALSE,
                   closable = FALSE,
-                  labelStatus = "primary",
-                  labelText = "",
+                  label = NULL,
                   width = 12,
-                  mod_display_imageui("image")
+                  tagList(
+                    fluidRow(
+                      col_12(
+                        mod_upload_graphicui("m1"),
+                        mod_display_imageui("image")
+                      )
+                    )
+                  )
+                  
                 )
               ),
               col_6(
@@ -172,75 +123,40 @@ app_ui <- function() {
                   collapsible = TRUE,
                   collapsed = FALSE,
                   closable = FALSE,
-                  labelStatus = "primary",
-                  labelText = "",
+                  label = NULL,
                   width = 12,
-                  mod_display_lego_2dui("m3")
+                  tagList(
+                    fluidRow(
+                      col_12(
+                        mod_process_image_ui("process_image_ui_1"),
+                        mod_display_lego_2dui("m3")
+                      )
+                    )
+                  )
                 )
               )
             )
           ),
+          # instructions module ----
           bs4TabItem(
             tabName = "instructions",
-            fluidRow(
-              col_12(
-                mod_define_stepsui("inst_steps")
-              )
-            ),
-            fluidRow(
-              col_12(
-                mod_choose_stepui("choice_steps")
-              )
-            ),
-            fluidRow(
-              col_6(
-                bs4TabCard(
-                  id = "bricks_req",
-                  title = "Bricks Required",
-                  status = NULL,
-                  solidHeader = FALSE,
-                  width = 12,
-                  side = "right",
-                  bs4TabPanel(
-                    tabName = "Diagram",
-                    active = TRUE,
-                    mod_display_piecesui("inst_pieces")
-                  ),
-                  bs4TabPanel(
-                    tabName = "Table",
-                    active = FALSE,
-                    mod_table_piecesui("inst_table")
-                  )
-                )
-              ),
-              col_6(
-                bs4Card(
-                  title = "Instructions",
-                  status = "primary",
-                  solidHeader = FALSE,
-                  collapsible = TRUE,
-                  collapsed = FALSE,
-                  closable = FALSE,
-                  labelStatus = "primary",
-                  labelText = "",
-                  width = 12,
-                  #"no way"
-                  mod_display_instructionsui("inst_display")
-                )
-              )
-            )
+            mod_instructionsui("mod_instructions_ui_1")
+          ),
+          bs4TabItem(
+            tabName = "feedback",
+            mod_feedback_ui("feedback_ui_1")
           )
         )
       ),
       
       # footer
       footer = bs4DashFooter(
-        copyrights = a(
+        left = a(
           href = "https://r-podcast.org",
           target = "_blank",
           "The R-Podcast"
         ),
-        right_text = "2019"
+        right = "2021"
       )
     )
   )
@@ -255,6 +171,10 @@ golem_add_external_resources <- function(){
   tagList(
     # Add here all the external resources
     # If you have a custom.css in the inst/app/www
-    #tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+    tippy::useTippy(),
+    cicerone::use_cicerone(),
+    tags$link(rel="stylesheet", type="text/css", href="www/css/legobricks.css"),
+    tags$link(rel="stylesheet", type="text/css", href="www/css/legothick.css")
+    #tags$style(HTML("body {font-family: 'LEGO BRIX', sans-serif;}" ))
   )
 }

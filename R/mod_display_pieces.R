@@ -6,7 +6,7 @@
 #'
 #' @export 
 #' @importFrom shiny NS tagList 
-#' @examples 
+#'  
 mod_display_piecesui <- function(id, height_window = 500) {
   ns <- NS(id)
   tagList(
@@ -30,21 +30,22 @@ mod_display_piecesui <- function(id, height_window = 500) {
 #' @export
 #' @rdname mod_display_piecesui
     
-mod_display_pieces <- function(input, output, session, steps_obj, step_choice) {
+mod_display_pieces <- function(input, output, session, scale_obj, steps_range, step_choice) {
   ns <- session$ns
   
   # reactive for plot object
   image_obj <- reactive({
-    pcs_steps_all <- step_pieces(steps_obj())
+    req(scale_obj())
+    req(steps_range())
+    req(step_choice())
     
-    # ensure that each step's bricks are only the total for that particular step
-    pcs_steps_all <- pcs_steps_all %>%
-      group_by(Brick_size, Lego_name, Lego_color) %>%
-      mutate(n = n - lag(n, default = 0)) %>%
-      ungroup
+    pcs_steps_all <- build_pieces_steps_table(
+      scale_obj(), 
+      num_steps = steps_range()$n_steps, 
+      table_format = "long"
+    )
     
-    step_choice_sub <- step_choice()
-    display_pieces(pcs_steps_all, step_id = step_choice_sub)
+    build_pieces_steps(pcs_steps_all, step = step_choice())
   })
   
   # display 2d lego plot

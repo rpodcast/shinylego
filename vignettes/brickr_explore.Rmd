@@ -18,6 +18,44 @@ knitr::opts_chunk$set(
 library(magick)
 library(brickr)
 library(dplyr)
+library(tidyr)
+library(readr)
+library(ggplot2)
+```
+
+```{r lego_colors, include=FALSE}
+# perform import ----
+lego_colors_old <- readr::read_csv(fs::path(here::here(), "data-raw", "Lego_Colors.csv"), 
+                               col_types = cols(
+                                 LEGONo = col_double(),
+                                 Color = col_character(),
+                                 Sample = col_logical(),
+                                 R = col_double(),
+                                 G = col_double(),
+                                 B = col_double(),
+                                 c_Palette2016 = col_logical(),
+                                 c_Transparent = col_logical(),
+                                 c_Glow = col_logical(),
+                                 c_Metallic = col_logical(),
+                                 t_BW = col_logical(),
+                                 t_Classic = col_logical(),
+                                 t_Friends = col_logical(),
+                                 w_weight = col_double(),
+                                 w_Classic = col_double()
+                               ))
+
+lego_colors_old <- lego_colors_old %>%
+  filter(c_Palette2016, !c_Transparent, !c_Glow, !c_Metallic) %>% 
+  mutate(hex_code = purrr::pmap_chr(
+    list(red = R, green = G, blue = B), 
+    function(red, green, blue) { rgb(red, green, blue, maxColorValue = 255) }
+    )
+  ) %>%
+  mutate_at(vars(R, G, B), list(~ ./255)) %>% 
+  rename(R_lego = R, G_lego = G, B_lego = B)%>% 
+  mutate_at(vars(starts_with("w_")), list(~ ifelse(is.na(.), 0, .)))
+
+lego_colors <- brickr::lego_colors
 ```
 
 # Background
@@ -34,24 +72,30 @@ In either case, we first need to import the image as an R object with the `{magi
 
 ```{r import-image}
 # read in jpg image as new object
-image_obj <- jpeg::readJPEG("images/kde_konqi_mascot.jpg")
+image_obj <- jpeg::readJPEG(fs::path(here::here(), "inst", "images", "kde_konqi_mascot.jpg"))
 ```
 
 ### Previous app paradigm
 
+All backend functions for producing the LEGO images 
 
-```{r previous-mosaic-gen, eval=FALSE}
-res <- scale_image(image = image_obj,
-                img_size = 48,
-                brightness = 1,
-                warhol = 1:3) %>%
-      legoize(theme = "bw", contrast = 1) %>%
-      collect_bricks(mosaic_type = "flat")
+The `scale_image` function is stored in the `R/lego_functions.R` script
+
+```{r previous-mosaic-gen}
+source(fs::path(here::here(), "R", "lego_functions.R"))
+res_prev <- scale_image(image = image_obj,
+                        img_size = 48,
+                        brightness = 1,
+                        warhol = 1:3) %>%
+              legoize(theme = "bw", contrast = 1) %>%
+              collect_bricks(mosaic_type = "flat")
+
+display_set(res_prev)
 ```
 
 ### `brickr` paradigm
 
-The main function for generating the mosaic data is [`image_to_mosaic()`](http://brickr.org/reference/image_to_mosaic.html) and it gives us a few additional customizations not present in the earlier functions:
+The main function for generating the mosaic data is [`image_to_mosaic()`](http://brickr.org/reference/image_to_mosaic.html) and it gives us additional customization not present in the earlier functions:
 
 * `color_table`: data frame of brick colors to map onto the image. The package includes a default data frame called `lego_colors`. I will likely stick with this default set, until I can figure out how to create a customized version.
 * `color_palette`: three color palettes are available, with __universal__ being the bricks that are most available. This can be a toggle in the app with the user able to select between the three choices. It would be cool to show a simple alert when the user chooses `special` to warn them how finding brick colors in this palette may be difficult. Note that we can have more than one specified in the function call, so the input element should allow for multiple selection.
@@ -60,21 +104,14 @@ The main function for generating the mosaic data is [`image_to_mosaic()`](http:/
 
 
 ```{r brickr-mosaic-gen}
-res <- brickr::image_to_mosaic(img = image_obj, img_size = 48, color_palette = "bw", brightness = 1)
+res <- brickr::image_to_mosaic(img = image_obj, 
+                               img_size = 48, 
+                               color_palette = "bw", 
+                               brightness = 1)
 brickr::build_mosaic(res)
 ```
 
 It should be easy to swap the new `brickr` version into the `mod_scale_image` module by adding new UI elements for the newer options and replacing the previous stepwise calls to `scale_image`, `legoize` and `collect_bricks`
-
-TODO:
-
-`build_pieces_table` should give similar information as the previous `collect_bricks` function.
-
-```{r brickr-pieces-table}
-brickr::build_pieces_table(res)
-```
-
-The column names may be slightly different than the previous version.
 
 ## Creating Instructions set
 
@@ -106,5 +143,100 @@ Next step:
 The function `brickr::build_instructions()` contains an internal function for creating the steps themselves into a data frame (called `create_steps`) 
 
 ```{r brickr-build-instructions}
-brickr::build_instructions(res)
+# trying out internal functions as part of the pipeline
+in_list <- res
+image <- in_list$Img_bricks
+type <- in_list$brickr_object
+type <- in_list$brickr_object
+
+num_steps <- 10
+num_steps <- min(abs(round(num_steps)), 40)
+rows_per_step <- ceiling((max(image$ymax)-0.5) / (num_steps+1))
+
+if (type == "mosaic") {
+  create_steps <- function(a, n_steps) {
+      if(a < n_steps){
+        image %>% 
+          dplyr::group_by(brick_name) %>% 
+          dplyr::filter(min(ymin) <= a*rows_per_step+(min(image$ymin)+0.5)) %>% 
+          dplyr::ungroup() %>%
+          dplyr::mutate(Step = paste("Step", stringr::str_pad(a, 2, pad = "0")))
+      } else {
+        image %>% 
+          dplyr::mutate(Step = paste("Step", stringr::str_pad(a, 2, pad = "0")))
+      }
+    }
+}
+
+steps_for_plot <- 1:num_steps %>% 
+      purrr::map_df(create_steps, num_steps) %>% 
+      dplyr::mutate(alpha = 1)
+
+steps_for_plot
+
+
+#brickr::build_instructions(res, num_steps = 10)
 ```
+
+
+TODO:
+
+`build_pieces_table` should give similar information as the previous `collect_bricks` function.
+
+```{r brickr-pieces-table}
+brickr::build_pieces_table(res)
+```
+
+```{r}
+brickr::build_pieces(res)
+```
+
+
+
+The column names may be slightly different than the previous version.
+
+```{r brick-pieces-all}
+pcs_total <- res$pieces
+pcs_total
+```
+
+```{r brick-pieces-steps}
+pcs_step_df <- steps_for_plot %>%
+  mutate(Brick_size = paste(brick_width, "x", brick_height)) %>%
+  select(Step, Brick_size, Lego_color, Lego_name, Piece = piece_type) %>%
+  group_by(Step, Brick_size, Lego_name, Lego_color, Piece) %>%
+  summarize(n_cumulative = n()) %>%
+  ungroup() %>%
+  group_by(Brick_size, Lego_color, Lego_name) %>%
+  mutate(n_step = n_cumulative - lag(n_cumulative)) %>%
+  ungroup() %>%
+  mutate(n_step = ifelse(is.na(n_step), n_cumulative, n_step))
+
+pcs_step_df
+
+pcs_step_df %>% 
+  dplyr::select(-Lego_color, -n_cumulative) %>% 
+  tidyr::pivot_wider(names_from = Brick_size, values_from = n_step, values_fill = 0) %>%
+  #tidyr::spread(Brick_size, n_step, fill = 0) %>% 
+  dplyr::rename(`LEGO Brick Color` = Lego_name)
+```
+
+```{r}
+source(fs::path(here::here(), "R", "fct_brickr_custom.R"))
+pcs_new <- build_pieces_steps_table(res, num_steps = 10, table_format = "long")
+pcs_new
+
+build_pieces_steps(pcs_new, step = "Step 08")
+```
+
+```{r}
+source(fs::path(here::here(), "R", "fct_brickr_custom.R"))
+pcs_new <- build_pieces_steps_table(res, num_steps = 10, table_format = "wide")
+pcs_new
+```
+
+```{r}
+source(fs::path(here::here(), "R", "fct_brickr_custom.R"))
+build_instructions_steps(res, num_steps = 10, step = "Step 01")
+```
+

@@ -7,7 +7,14 @@
 \usage{
 mod_display_instructionsui(id, height_window = 500)
 
-mod_display_instructions(input, output, session, steps_obj, step_choice)
+mod_display_instructions(
+  input,
+  output,
+  session,
+  scale_obj,
+  steps_range,
+  step_choice
+)
 }
 \arguments{
 \item{id}{shiny id}
