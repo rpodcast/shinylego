@@ -171,6 +171,8 @@ golem_add_external_resources <- function(){
   tagList(
     # Add here all the external resources
     # If you have a custom.css in the inst/app/www
-    #tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+    tags$link(rel="stylesheet", type="text/css", href="www/css/legobricks.css"),
+    tags$link(rel="stylesheet", type="text/css", href="www/css/legothick.css")
+    #tags$style(HTML("body {font-family: 'LEGO BRIX', sans-serif;}" ))
   )
 }
