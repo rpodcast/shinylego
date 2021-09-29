@@ -1,6 +1,14 @@
 #' @import shiny
 app_server <- function(input, output, session) {
   
+  # reactive for current tab viewed in the interface
+  current_tab <- reactive({
+    input$current_tab
+  })
+  
+  # help button module
+  callModule(mod_help_button_server, "help_button_ui_1", current_tab)
+  
   # upload graphic module
   upload_obj <- callModule(mod_upload_graphic, "m1")
   

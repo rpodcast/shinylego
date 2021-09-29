@@ -10,6 +10,7 @@ app_ui <- function() {
       
       # navigation bar
       header = bs4DashNavbar(
+        mod_help_button_ui("help_button_ui_1"),
         skin = "dark",
         status = "primary"
       ),
@@ -26,7 +27,7 @@ app_ui <- function() {
         
         # left sidebar menu
         bs4SidebarMenu(
-          #bs4SidebarHeader("Header"),
+          id = "current_tab",
           bs4SidebarMenuItem(
             "Welcome",
             tabName = "welcome",

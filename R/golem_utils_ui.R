@@ -236,3 +236,9 @@ col_3 <- function(...){
 col_2 <- function(...){
   shiny::column(2, ...)
 }
+
+#' @export
+#' @rdname columns
+col_1 <- function(...){
+  shiny::column(1, ...)
+}

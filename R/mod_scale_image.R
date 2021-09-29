@@ -28,7 +28,7 @@ mod_scale_imageui <- function(id){
           width = 12,
           tagList(
             fluidRow(
-              col_2(
+              col_3(
                 numericInput(
                   ns("dimension_width"),
                   "Plate width",
@@ -36,9 +36,7 @@ mod_scale_imageui <- function(id){
                   min = 12,
                   max = 1000,
                   step = 1,
-                )
-              ),
-              col_2(
+                ),
                 numericInput(
                   ns("dimension_height"),
                   "Plate height",
@@ -48,7 +46,7 @@ mod_scale_imageui <- function(id){
                   step = 1,
                 )
               ),
-              col_2(
+              col_3(
                 sliderInput(
                   ns("brightness"),
                   "Brightness",
@@ -62,10 +60,14 @@ mod_scale_imageui <- function(id){
                 shinyWidgets::radioGroupButtons(
                   ns("color_category"),
                   label = "Color Palette",
+                  status = "primary",
                   choices = c(
                     "Defaults" = "default",
                     #"Customized" = "custom",
                     "Black & White" = "bw"
+                  ),
+                  checkIcon = list(
+                    yes = icon("check-square")
                   )
                 ),
                 conditionalPanel(

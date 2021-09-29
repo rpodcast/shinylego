@@ -6,6 +6,7 @@
 \alias{col_4}
 \alias{col_3}
 \alias{col_2}
+\alias{col_1}
 \title{Columns 12, 6 and 4}
 \usage{
 col_12(...)
@@ -17,6 +18,8 @@ col_4(...)
 col_3(...)
 
 col_2(...)
+
+col_1(...)
 }
 \description{
 Most shiny columns are 12, 6 or 4 of width.
