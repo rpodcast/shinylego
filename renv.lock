@@ -842,13 +842,6 @@
       "Repository": "RSPM",
       "Hash": "71dffd8544691c520dd8e41ed2d7e070"
     },
-    "tictoc": {
-      "Package": "tictoc",
-      "Version": "1.0",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "f8cc5adf4671b013434bbe127f35b28c"
-    },
     "tidyr": {
       "Package": "tidyr",
       "Version": "1.1.2",

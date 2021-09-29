@@ -224,14 +224,14 @@ mod_scale_image <- function(input, output, session, img_processed){
       return(NULL)
     }
     
-    tictoc::tic("image_to_scaled processing")
+    #tictoc::tic("image_to_scaled processing")
     res <- brickr:::image_to_scaled(
       image = img_processed()$image_obj,
       img_size = dimension_obj(),
       brightness = input$brightness,
       warhol = 1:3
     )
-    tictoc::toc()
+    #tictoc::toc()
     return(res)
   })
   
@@ -240,7 +240,7 @@ mod_scale_image <- function(input, output, session, img_processed){
     req(image_layer1())
     req(palette_list())
     req(input$match_alg)
-    tictoc::tic("scaled_to_colors processing")
+    #tictoc::tic("scaled_to_colors processing")
     res <- brickr:::scaled_to_colors(
       image_list = image_layer1(),
       color_palette = palette_list()$color_palette,
@@ -251,7 +251,7 @@ mod_scale_image <- function(input, output, session, img_processed){
       method = input$match_alg,
       default_piece_type = "b"
     )
-    tictoc::toc()
+    #tictoc::toc()
     
     return(res)
   })

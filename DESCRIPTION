@@ -34,7 +34,6 @@ Imports:
     shinyjs,
     brickr,
     gh,
-    tictoc,
     colourpicker
 URL: https://github.com/rpodcast/shinylego
 BugReports: https://github.com/rpodcast/shinylego/issues

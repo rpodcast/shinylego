@@ -36,10 +36,10 @@ mod_display_lego_2d <- function(input, output, session, image_lego_obj){
   # reactive for plot object
   image_obj <- reactive({
     req(image_lego_obj())
-    tictoc::tic("build_mosaic processing")
+    #tictoc::tic("build_mosaic processing")
     #display_set(image_lego_obj(), title = NULL)
     res <- brickr::build_mosaic(image_lego_obj())
-    tictoc::toc()
+    #tictoc::toc()
     return(res)
   })
   

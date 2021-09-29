@@ -33,13 +33,13 @@ mod_process_image_server <- function(input, output, session, image_layer2){
   # reactive for third layer (collect_bricks)
   observeEvent(input$apply_settings, {
     req(image_layer2())
-    tictoc::tic("collect_bricks processing")
+    #tictoc::tic("collect_bricks processing")
     res <- brickr:::collect_bricks(
       image_list = image_layer2(),
       use_bricks = NULL,
       default_piece_type = "b"
     )
-    tictoc::toc()
+    #tictoc::toc()
     image_lego(res)
   })
   
